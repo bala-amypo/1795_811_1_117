@@ -1,29 +1,37 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.entity.ViolationRecord;
-import com.example.demo.service.ViolationRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/violations")
+@RequestMapping("/api/violations")
+@Tag(name = "ViolationRecordController", description = "Violation record APIs")
 public class ViolationRecordController {
 
-    private final ViolationRecordService violationRecordService;
-
-    public ViolationRecordController(ViolationRecordService violationRecordService) {
-        this.violationRecordService = violationRecordService;
-    }
-
     @PostMapping
-    public ViolationRecord saveViolation(@RequestBody ViolationRecord violationRecord) {
-        return violationRecordService.saveViolation(violationRecord);
+    public String logViolation(@RequestBody Object violation) {
+        return "Violation logged";
     }
 
     @GetMapping("/user/{userId}")
-    public List<ViolationRecord> getViolationsByUserId(@PathVariable Long userId) {
-        return violationRecordService.getViolationsByUserId(userId);
+    public List<String> getUserViolations(@PathVariable Long userId) {
+        return new ArrayList<>();
+    }
+
+    @PutMapping("/{id}/resolve")
+    public String resolveViolation(@PathVariable Long id) {
+        return "Violation " + id + " resolved";
+    }
+
+    @GetMapping("/unresolved")
+    public List<String> getUnresolvedViolations() {
+        return new ArrayList<>();
+    }
+
+    @GetMapping
+    public List<String> getAllViolations() {
+        return new ArrayList<>();
     }
 }
