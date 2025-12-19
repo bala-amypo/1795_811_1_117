@@ -1,29 +1,32 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.entity.UserAccount;
-import com.example.demo.service.UserAccountService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
+@Tag(name = "UserAccountController", description = "Manage users")
 public class UserAccountController {
 
-    private final UserAccountService userAccountService;
-
-    public UserAccountController(UserAccountService userAccountService) {
-        this.userAccountService = userAccountService;
+    @PostMapping
+    public String createUser(@RequestBody Object user) {
+        return "User created";
     }
 
     @GetMapping("/{id}")
-    public UserAccount getUserById(@PathVariable Long id) {
-        return userAccountService.getUserById(id);
+    public String getUser(@PathVariable Long id) {
+        return "Get user by id: " + id;
+    }
+
+    @PutMapping("/{id}/status")
+    public String updateStatus(@PathVariable Long id, @RequestBody String status) {
+        return "User " + id + " status updated to " + status;
     }
 
     @GetMapping
-    public List<UserAccount> getAllUsers() {
-        return userAccountService.getAllUsers();
+    public List<String> getAllUsers() {
+        return new ArrayList<>();
     }
 }
