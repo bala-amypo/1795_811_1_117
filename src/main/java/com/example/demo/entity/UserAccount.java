@@ -15,35 +15,36 @@ public class UserAccount {
     private Long id;
 
     private String employeeId;
+
     private String username;
+
     private String email;
+
     private String password;
+
     private String role;
+
     private String status;
+
     private LocalDateTime createdAt;
 
-    public UserAccount(Long id, String employeeId, String username, String email, String password, String role,
-            String status, LocalDateTime createdAt) {
-        this.id = id;
+    public UserAccount() {
+        this.status = "ACTIVE";
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public UserAccount(String employeeId, String username, String email, String password, String role) {
         this.employeeId = employeeId;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.status = status;
-        this.createdAt = createdAt;
-    }
-
-    public UserAccount() {
-
+        this.status = "ACTIVE";
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmployeeId() {
@@ -97,9 +98,4 @@ public class UserAccount {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
 }
