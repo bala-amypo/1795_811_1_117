@@ -1,32 +1,37 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.entity.LoginEvent;
+import com.example.demo.service.LoginEventService;
 
 @RestController
 @RequestMapping("/api/logins")
-@Tag(name = "LoginEventController", description = "Login events APIs")
 public class LoginEventController {
 
+    private final LoginEventService service;
+
+    public LoginEventController(LoginEventService service) {
+        this.service = service;
+    }
+
     @PostMapping("/record")
-    public String logLogin(@RequestBody Object loginEvent) {
-        return "Login recorded";
+    public LoginEvent record(@RequestBody LoginEvent event) {
+        return service.recordLogin(event);
     }
 
     @GetMapping("/user/{userId}")
-    public List<String> getUserLogins(@PathVariable Long userId) {
-        return new ArrayList<>();
+    public List<LoginEvent> byUser(@PathVariable Long userId) {
+        return service.getEventsByUser(userId);
     }
 
     @GetMapping("/suspicious/{userId}")
-    public List<String> getSuspiciousLogins(@PathVariable Long userId) {
-        return new ArrayList<>();
+    public List<LoginEvent> suspicious(@PathVariable Long userId) {
+        return service.getSuspiciousLogins(userId);
     }
 
     @GetMapping
-    public List<String> getAllLogins() {
-        return new ArrayList<>();
+    public List<LoginEvent> all() {
+        return service.getAllEvents();
     }
 }

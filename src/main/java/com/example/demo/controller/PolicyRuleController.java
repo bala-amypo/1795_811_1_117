@@ -1,32 +1,37 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.entity.PolicyRule;
+import com.example.demo.service.PolicyRuleService;
 
 @RestController
 @RequestMapping("/api/rules")
-@Tag(name = "PolicyRuleController", description = "Policy rules APIs")
 public class PolicyRuleController {
 
+    private final PolicyRuleService service;
+
+    public PolicyRuleController(PolicyRuleService service) {
+        this.service = service;
+    }
+
     @PostMapping
-    public String createRule(@RequestBody Object rule) {
-        return "Rule created";
+    public PolicyRule create(@RequestBody PolicyRule rule) {
+        return service.createRule(rule);
     }
 
     @PutMapping("/{id}")
-    public String updateRule(@PathVariable Long id, @RequestBody Object rule) {
-        return "Rule " + id + " updated";
+    public PolicyRule update(@PathVariable Long id, @RequestBody PolicyRule rule) {
+        return service.updateRule(id, rule);
     }
 
     @GetMapping("/active")
-    public List<String> getActiveRules() {
-        return new ArrayList<>();
+    public List<PolicyRule> active() {
+        return service.getActiveRules();
     }
 
     @GetMapping
-    public List<String> getAllRules() {
-        return new ArrayList<>();
+    public List<PolicyRule> all() {
+        return service.getAllRules();
     }
 }
