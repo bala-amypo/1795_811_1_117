@@ -11,11 +11,13 @@ public class PolicyRule {
 
     private String ruleCode;
     private String description;
-    private String severity;
+    private String severity; 
     private String conditionsJson;
     private Boolean active;
 
     public PolicyRule() {}
+
+    
 
     public Long getId() {
         return id;
@@ -32,32 +34,37 @@ public class PolicyRule {
     public String getDescription() {
         return description;
     }
-  
+
     public void setDescription(String description) {
         this.description = description;
     }
-  
+
     public String getSeverity() {
         return severity;
     }
-  
+
     public void setSeverity(String severity) {
         this.severity = severity;
     }
-  
+
     public String getConditionsJson() {
         return conditionsJson;
     }
-  
+
     public void setConditionsJson(String conditionsJson) {
         this.conditionsJson = conditionsJson;
     }
-  
+
     public Boolean getActive() {
         return active;
     }
-  
+
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    
+    public boolean isActive() {
+        return Boolean.TRUE.equals(active);
     }
 }
