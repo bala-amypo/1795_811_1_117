@@ -5,13 +5,9 @@ import com.example.demo.entity.ViolationRecord;
 
 public interface ViolationRecordService {
 
-    ViolationRecord logViolation(ViolationRecord violation);
+    ViolationRecord saveViolation(ViolationRecord violationRecord);
 
     List<ViolationRecord> getViolationsByUser(Long userId);
-
-    ViolationRecord markResolved(Long id);
-
-    List<ViolationRecord> getUnresolvedViolations();
 
     List<ViolationRecord> getAllViolations();
 }
