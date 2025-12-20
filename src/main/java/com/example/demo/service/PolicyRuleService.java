@@ -5,7 +5,11 @@ import com.example.demo.entity.PolicyRule;
 
 public interface PolicyRuleService {
 
-    PolicyRule savePolicyRule(PolicyRule policyRule);
+    PolicyRule createRule(PolicyRule policyRule);
 
-    List<PolicyRule> getAllPolicyRules();
+    PolicyRule updateRule(Long id, PolicyRule policyRule);
+
+    List<PolicyRule> getActiveRules();
+
+    List<PolicyRule> getAllRules();
 }

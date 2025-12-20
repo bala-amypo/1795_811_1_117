@@ -5,7 +5,9 @@ import com.example.demo.entity.DeviceProfile;
 
 public interface DeviceProfileService {
 
-    DeviceProfile saveDevice(DeviceProfile deviceProfile);
+    DeviceProfile registerDevice(DeviceProfile deviceProfile);
+
+    DeviceProfile updateTrustStatus(Long id, boolean trust);
 
     List<DeviceProfile> getDevicesByUser(Long userId);
 
