@@ -9,21 +9,27 @@ import com.example.demo.service.UserAccountService;
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userAccountRepository;
+    private final UserAccountRepository repository;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
-        this.userAccountRepository = userAccountRepository;
+    public UserAccountServiceImpl(UserAccountRepository repository) {
+        this.repository = repository;
     }
 
     public UserAccount createUser(UserAccount userAccount) {
-        return userAccountRepository.save(userAccount);
+        return repository.save(userAccount);
     }
 
     public UserAccount getUserById(Long id) {
-        return userAccountRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
+    }
+
+    public UserAccount updateUserStatus(Long id, String status) {
+        UserAccount user = repository.findById(id).orElse(null);
+        user.setStatus(status);
+        return repository.save(user);
     }
 
     public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+        return repository.findAll();
     }
 }

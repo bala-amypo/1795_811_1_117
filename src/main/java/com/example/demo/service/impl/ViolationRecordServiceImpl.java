@@ -9,21 +9,27 @@ import com.example.demo.service.ViolationRecordService;
 @Service
 public class ViolationRecordServiceImpl implements ViolationRecordService {
 
-    private final ViolationRecordRepository violationRecordRepository;
+    private final ViolationRecordRepository repository;
 
-    public ViolationRecordServiceImpl(ViolationRecordRepository violationRecordRepository) {
-        this.violationRecordRepository = violationRecordRepository;
+    public ViolationRecordServiceImpl(ViolationRecordRepository repository) {
+        this.repository = repository;
     }
 
-    public ViolationRecord saveViolation(ViolationRecord violationRecord) {
-        return violationRecordRepository.save(violationRecord);
+    public ViolationRecord logViolation(ViolationRecord violationRecord) {
+        return repository.save(violationRecord);
+    }
+
+    public ViolationRecord markResolved(Long id) {
+        ViolationRecord record = repository.findById(id).orElse(null);
+        record.setResolved(true);
+        return repository.save(record);
     }
 
     public List<ViolationRecord> getViolationsByUser(Long userId) {
-        return violationRecordRepository.findByUserId(userId);
+        return repository.findByUserId(userId);
     }
 
-    public List<ViolationRecord> getAllViolations() {
-        return violationRecordRepository.findAll();
+    public List<ViolationRecord> getUnresolvedViolations() {
+        return repository.findByResolvedFalse();
     }
 }

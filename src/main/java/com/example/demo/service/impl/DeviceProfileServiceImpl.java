@@ -9,17 +9,27 @@ import com.example.demo.service.DeviceProfileService;
 @Service
 public class DeviceProfileServiceImpl implements DeviceProfileService {
 
-    private final DeviceProfileRepository deviceProfileRepository;
+    private final DeviceProfileRepository repository;
 
-    public DeviceProfileServiceImpl(DeviceProfileRepository deviceProfileRepository) {
-        this.deviceProfileRepository = deviceProfileRepository;
+    public DeviceProfileServiceImpl(DeviceProfileRepository repository) {
+        this.repository = repository;
     }
 
-    public DeviceProfile saveDevice(DeviceProfile deviceProfile) {
-        return deviceProfileRepository.save(deviceProfile);
+    public DeviceProfile registerDevice(DeviceProfile deviceProfile) {
+        return repository.save(deviceProfile);
     }
 
-    public List<DeviceProfile> getDevicesByUserId(Long userId) {
-        return deviceProfileRepository.findByUserId(userId);
+    public DeviceProfile updateTrustStatus(Long id, boolean trust) {
+        DeviceProfile device = repository.findById(id).orElse(null);
+        device.setIsTrusted(trust);
+        return repository.save(device);
+    }
+
+    public List<DeviceProfile> getDevicesByUser(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    public List<DeviceProfile> getAllDevices() {
+        return repository.findAll();
     }
 }

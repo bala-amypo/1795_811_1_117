@@ -9,17 +9,26 @@ import com.example.demo.service.PolicyRuleService;
 @Service
 public class PolicyRuleServiceImpl implements PolicyRuleService {
 
-    private final PolicyRuleRepository policyRuleRepository;
+    private final PolicyRuleRepository repository;
 
-    public PolicyRuleServiceImpl(PolicyRuleRepository policyRuleRepository) {
-        this.policyRuleRepository = policyRuleRepository;
+    public PolicyRuleServiceImpl(PolicyRuleRepository repository) {
+        this.repository = repository;
     }
 
-    public PolicyRule savePolicyRule(PolicyRule policyRule) {
-        return policyRuleRepository.save(policyRule);
+    public PolicyRule createRule(PolicyRule policyRule) {
+        return repository.save(policyRule);
     }
 
-    public List<PolicyRule> getAllPolicyRules() {
-        return policyRuleRepository.findAll();
+    public PolicyRule updateRule(Long id, PolicyRule policyRule) {
+        policyRule.setId(id);
+        return repository.save(policyRule);
+    }
+
+    public List<PolicyRule> getActiveRules() {
+        return repository.findByActiveTrue();
+    }
+
+    public List<PolicyRule> getAllRules() {
+        return repository.findAll();
     }
 }
