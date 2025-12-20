@@ -1,17 +1,15 @@
 package com.example.demo.service;
 
 import java.util.List;
-import com.example.demo.entity.ViolationRecord;
+import com.example.demo.entity.PolicyRule;
 
-public interface ViolationRecordService {
+public interface PolicyRuleService {
 
-    ViolationRecord logViolation(ViolationRecord violation);
+    PolicyRule createRule(PolicyRule rule);
 
-    List<ViolationRecord> getViolationsByUser(Long userId);
+    PolicyRule updateRule(Long id, PolicyRule rule);
 
-    ViolationRecord markResolved(Long id);
+    List<PolicyRule> getActiveRules();
 
-    List<ViolationRecord> getUnresolvedViolations();
-
-    List<ViolationRecord> getAllViolations();
+    List<PolicyRule> getAllRules();
 }
