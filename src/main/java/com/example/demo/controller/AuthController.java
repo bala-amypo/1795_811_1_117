@@ -1,20 +1,21 @@
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.demo.entity.UserAccount;
+import com.example.demo.service.UserAccountService;
 
 @RestController
-@RequestMapping("/api/auth")
-@Tag(name = "AuthController", description = "Authentication APIs")
+@RequestMapping("/auth")
 public class AuthController {
 
-    @PostMapping("/register")
-    public String register(@RequestBody Object user) {
-        return "User registered";
+    private final UserAccountService service;
+
+    public AuthController(UserAccountService service) {
+        this.service = service;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody Object login) {
-        return "User logged in";
+    @PostMapping("/register")
+    public UserAccount register(@RequestBody UserAccount user) {
+        return service.createUser(user);
     }
 }
