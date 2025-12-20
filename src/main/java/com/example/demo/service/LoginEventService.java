@@ -5,7 +5,11 @@ import com.example.demo.entity.LoginEvent;
 
 public interface LoginEventService {
 
-    LoginEvent saveLoginEvent(LoginEvent loginEvent);
+    LoginEvent recordLogin(LoginEvent event);
 
-    List<LoginEvent> getEventsByUserId(Long userId);
+    List<LoginEvent> getEventsByUser(Long userId);
+
+    List<LoginEvent> getSuspiciousLogins(Long userId);
+
+    List<LoginEvent> getAllEvents();
 }
