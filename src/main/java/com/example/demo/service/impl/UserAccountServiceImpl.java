@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
+import java.util.Optional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
@@ -9,21 +11,34 @@ import com.example.demo.service.UserAccountService;
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userAccountRepository;
+    private final UserAccountRepository repo;
+    private final PasswordEncoder encoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
-        this.userAccountRepository = userAccountRepository;
+    public UserAccountServiceImpl(UserAccountRepository repo, PasswordEncoder encoder) {
+        this.repo = repo;
+        this.encoder = encoder;
     }
 
-    public UserAccount createUser(UserAccount userAccount) {
-        return userAccountRepository.save(userAccount);
+    public UserAccount createUser(UserAccount user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user);
     }
 
     public UserAccount getUserById(Long id) {
-        return userAccountRepository.findById(id).orElse(null);
+        return repo.findById(id).orElseThrow();
+    }
+
+    public UserAccount updateUserStatus(Long id, String status) {
+        UserAccount user = getUserById(id);
+        user.setStatus(status);
+        return repo.save(user);
     }
 
     public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+        return repo.findAll();
+    }
+
+    public Optional<UserAccount> findByUsername(String username) {
+        return repo.findByUsername(username);
     }
 }
