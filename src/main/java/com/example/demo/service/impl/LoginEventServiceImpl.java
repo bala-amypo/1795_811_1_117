@@ -9,25 +9,21 @@ import com.example.demo.service.LoginEventService;
 @Service
 public class LoginEventServiceImpl implements LoginEventService {
 
-    private final LoginEventRepository repo;
+    private final LoginEventRepository loginEventRepository;
 
-    public LoginEventServiceImpl(LoginEventRepository repo) {
-        this.repo = repo;
+    public LoginEventServiceImpl(LoginEventRepository loginEventRepository) {
+        this.loginEventRepository = loginEventRepository;
     }
 
-    public LoginEvent recordLogin(LoginEvent event) {
-        return repo.save(event);
+    public LoginEvent saveLoginEvent(LoginEvent loginEvent) {
+        return loginEventRepository.save(loginEvent);
     }
 
-    public List<LoginEvent> getEventsByUser(Long userId) {
-        return repo.findByUserId(userId);
+    public List<LoginEvent> getLoginEventsByUser(Long userId) {
+        return loginEventRepository.findByUserId(userId);
     }
 
-    public List<LoginEvent> getSuspiciousLogins(Long userId) {
-        return repo.findByUserIdAndLoginStatus(userId, "FAILED");
-    }
-
-    public List<LoginEvent> getAllEvents() {
-        return repo.findAll();
+    public List<LoginEvent> getAllLoginEvents() {
+        return loginEventRepository.findAll();
     }
 }

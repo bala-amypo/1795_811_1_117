@@ -19,7 +19,11 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
         return violationRecordRepository.save(violationRecord);
     }
 
-    public List<ViolationRecord> getViolationsByUserId(Long userId) {
+    public List<ViolationRecord> getViolationsByUser(Long userId) {
         return violationRecordRepository.findByUserId(userId);
+    }
+
+    public List<ViolationRecord> getAllViolations() {
+        return violationRecordRepository.findAll();
     }
 }

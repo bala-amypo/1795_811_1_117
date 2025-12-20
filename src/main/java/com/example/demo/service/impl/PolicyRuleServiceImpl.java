@@ -15,11 +15,11 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
         this.policyRuleRepository = policyRuleRepository;
     }
 
-    public PolicyRule saveRule(PolicyRule policyRule) {
+    public PolicyRule savePolicyRule(PolicyRule policyRule) {
         return policyRuleRepository.save(policyRule);
     }
 
-    public List<PolicyRule> getActiveRules() {
-        return policyRuleRepository.findByActiveTrue();
+    public List<PolicyRule> getAllPolicyRules() {
+        return policyRuleRepository.findAll();
     }
 }
