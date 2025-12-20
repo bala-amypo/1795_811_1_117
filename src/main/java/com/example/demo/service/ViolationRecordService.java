@@ -12,4 +12,6 @@ public interface ViolationRecordService {
     List<ViolationRecord> getViolationsByUser(Long userId);
 
     List<ViolationRecord> getUnresolvedViolations();
+
+    List<ViolationRecord> getAllViolations();
 }

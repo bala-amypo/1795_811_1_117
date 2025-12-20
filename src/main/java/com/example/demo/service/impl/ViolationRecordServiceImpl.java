@@ -32,4 +32,8 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
     public List<ViolationRecord> getUnresolvedViolations() {
         return repository.findByResolvedFalse();
     }
+
+    public List<ViolationRecord> getAllViolations() {
+        return repository.findAll();
+    }
 }

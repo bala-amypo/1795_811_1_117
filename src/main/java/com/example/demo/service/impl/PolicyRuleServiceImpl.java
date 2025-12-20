@@ -20,8 +20,13 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
     }
 
     public PolicyRule updateRule(Long id, PolicyRule policyRule) {
-        policyRule.setId(id);
-        return repository.save(policyRule);
+        PolicyRule existing = repository.findById(id).orElse(null);
+
+        existing.setRuleName(policyRule.getRuleName());
+        existing.setDescription(policyRule.getDescription());
+        existing.setActive(policyRule.isActive());
+
+        return repository.save(existing);
     }
 
     public List<PolicyRule> getActiveRules() {
