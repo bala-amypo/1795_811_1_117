@@ -8,13 +8,11 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String secret;
-    private final long validityInMs;
 
-    public JwtUtil() {
-        this.secret = "TestSecretKeyForJWT1234567890TestSecretKeyForJWT1234567890";
-        this.validityInMs = 3600000;
-    }
+    private String secret = "TestSecretKeyForJWT1234567890TestSecretKeyForJWT1234567890";
+    private long validityInMs = 3600000;
+
+    public JwtUtil() {}
 
     public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
         this.secret = secret;
@@ -26,13 +24,18 @@ public class JwtUtil {
     }
 
     public String generateToken(String username, Long userId, String email, String role) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("userId", userId);
+        claims.put("email", email);
+        claims.put("role", role);
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMs);
+
         return Jwts.builder()
-                .setSubject(username)
-                .claim("userId", userId)
-                .claim("email", email)
-                .claim("role", role)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -44,10 +47,6 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public String getUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     public String getEmail(String token) {
