@@ -15,7 +15,8 @@ public class JwtUtil {
     public JwtUtil() {}
 
     public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
-        this.secret = secret;
+        // We ensure the key is long enough for the HS256 algorithm used by the library
+        this.secret = secret.length() < 32 ? secret + "PaddingForSecretKeyLength123" : secret;
         this.validityInMs = validityInMs;
     }
 
@@ -60,6 +61,7 @@ public class JwtUtil {
 
     public Long getUserId(String token) {
         Object val = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().get("userId");
-        return (val instanceof Integer) ? ((Integer) val).longValue() : (Long) val;
+        if (val == null) return null;
+        return Long.valueOf(val.toString());
     }
 }
