@@ -1,28 +1,41 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.PolicyRule;
-import com.example.demo.repository.PolicyRuleRepository;
+import com.example.demo.service.PolicyRuleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/policy-rules")
+@RequestMapping("/api/rules")
+@Tag(name = "Policy Rules", description = "Operations on policy rules")
 public class PolicyRuleController {
 
-    private final PolicyRuleRepository repository;
+    private final PolicyRuleService ruleService;
 
-    public PolicyRuleController(PolicyRuleRepository repository) {
-        this.repository = repository;
+    public PolicyRuleController(PolicyRuleService ruleService) {
+        this.ruleService = ruleService;
     }
 
     @PostMapping
-    public PolicyRule create(@RequestBody PolicyRule policyRule) {
-        return repository.save(policyRule);
+    public ResponseEntity<PolicyRule> createRule(@RequestBody PolicyRule rule) {
+        return ResponseEntity.ok(ruleService.createRule(rule));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PolicyRule> updateRule(@PathVariable Long id, @RequestBody PolicyRule rule) {
+        return ResponseEntity.ok(ruleService.updateRule(id, rule));
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<PolicyRule>> getActiveRules() {
+        return ResponseEntity.ok(ruleService.getActiveRules());
     }
 
     @GetMapping
-    public List<PolicyRule> getAll() {
-        return repository.findAll();
+    public ResponseEntity<List<PolicyRule>> getAllRules() {
+        return ResponseEntity.ok(ruleService.getAllRules());
     }
 }

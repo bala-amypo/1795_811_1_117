@@ -1,28 +1,46 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.ViolationRecord;
-import com.example.demo.repository.ViolationRecordRepository;
+import com.example.demo.service.ViolationRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/violations")
+@Tag(name = "Violation Records", description = "Operations on violation records")
 public class ViolationRecordController {
 
-    private final ViolationRecordRepository repository;
+    private final ViolationRecordService violationService;
 
-    public ViolationRecordController(ViolationRecordRepository repository) {
-        this.repository = repository;
+    public ViolationRecordController(ViolationRecordService violationService) {
+        this.violationService = violationService;
     }
 
     @PostMapping
-    public ViolationRecord create(@RequestBody ViolationRecord violationRecord) {
-        return repository.save(violationRecord);
+    public ResponseEntity<ViolationRecord> logViolation(@RequestBody ViolationRecord violation) {
+        return ResponseEntity.ok(violationService.logViolation(violation));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ViolationRecord>> getByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(violationService.getViolationsByUser(userId));
+    }
+
+    @PutMapping("/{id}/resolve")
+    public ResponseEntity<ViolationRecord> markResolved(@PathVariable Long id) {
+        return ResponseEntity.ok(violationService.markResolved(id));
+    }
+
+    @GetMapping("/unresolved")
+    public ResponseEntity<List<ViolationRecord>> getUnresolved() {
+        return ResponseEntity.ok(violationService.getUnresolvedViolations());
     }
 
     @GetMapping
-    public List<ViolationRecord> getAll() {
-        return repository.findAll();
+    public ResponseEntity<List<ViolationRecord>> getAll() {
+        return ResponseEntity.ok(violationService.getAllViolations());
     }
 }
