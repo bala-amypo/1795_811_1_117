@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class ViolationRecord {
@@ -10,10 +11,16 @@ public class ViolationRecord {
     private Long id;
 
     private Long userId;
+
     private Long eventId;
+
     private String severity;
+
     private String details;
+
     private Boolean resolved;
+
+    private LocalDateTime timestamp;
 
     public Long getId() {
         return id;
@@ -61,5 +68,13 @@ public class ViolationRecord {
 
     public void setResolved(Boolean resolved) {
         this.resolved = resolved;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }
