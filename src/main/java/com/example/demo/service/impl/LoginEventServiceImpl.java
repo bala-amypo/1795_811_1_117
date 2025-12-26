@@ -9,10 +9,10 @@ import java.util.List;
 
 @Service
 public class LoginEventServiceImpl implements LoginEventService {
-
     private final LoginEventRepository loginRepo;
     private final RuleEvaluationUtil ruleEvaluator;
 
+    // ORDER: Repository first, then Evaluator
     public LoginEventServiceImpl(LoginEventRepository loginRepo, RuleEvaluationUtil ruleEvaluator) {
         this.loginRepo = loginRepo;
         this.ruleEvaluator = ruleEvaluator;
