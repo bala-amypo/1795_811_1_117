@@ -10,11 +10,13 @@ import java.util.Arrays;
 public class JwtUtil {
     private final Key key;
     private final long validity;
+    private final boolean isTestMode;
 
     public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
         this.validity = validityInMs;
+        this.isTestMode = isTestMode;
         byte[] keyBytes = secret.getBytes();
-        // Pad key to 64 bytes to ensure it works for HS256/HS384/HS512 in all modes
+        // Ensure the key is at least 32 bytes for HS256
         byte[] paddedKey = new byte[64];
         System.arraycopy(keyBytes, 0, paddedKey, 0, Math.min(keyBytes.length, 64));
         this.key = Keys.hmacShaKeyFor(paddedKey);
@@ -39,19 +41,16 @@ public class JwtUtil {
         } catch (Exception e) { return false; }
     }
 
+    public String getUsername(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
     public String getEmail(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("email", String.class);
     }
-
     public String getRole(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("role", String.class);
     }
-
     public Long getUserId(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("userId", Long.class);
-    }
-
-    public String getUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }
