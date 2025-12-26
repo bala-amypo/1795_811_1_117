@@ -20,15 +20,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        // IMPORTANT: create filter manually (NOT a Spring bean)
         JwtAuthenticationFilter jwtFilter =
                 new JwtAuthenticationFilter(jwtTokenProvider);
 
         http
+            // disable CSRF for APIs
             .csrf(csrf -> csrf.disable())
+
+            // authorization rules
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
             )
+
+            // add JWT filter before username/password filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
