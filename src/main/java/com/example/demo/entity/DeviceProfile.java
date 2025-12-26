@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class DeviceProfile {
@@ -13,17 +13,16 @@ public class DeviceProfile {
     private Long userId;
     private String deviceId;
     private String deviceType;
+    private Boolean isTrusted;
     private String osVersion;
     private LocalDateTime lastSeen;
-    private Boolean isTrusted;
-
-    public DeviceProfile() {
-        this.lastSeen = LocalDateTime.now();
-        this.isTrusted = false;
-    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -50,6 +49,14 @@ public class DeviceProfile {
         this.deviceType = deviceType;
     }
 
+    public Boolean getIsTrusted() {
+        return isTrusted;
+    }
+
+    public void setIsTrusted(Boolean isTrusted) {
+        this.isTrusted = isTrusted;
+    }
+
     public String getOsVersion() {
         return osVersion;
     }
@@ -62,12 +69,7 @@ public class DeviceProfile {
         return lastSeen;
     }
 
-    public Boolean getIsTrusted() {
-        return isTrusted;
-    }
-
-    public void setIsTrusted(Boolean isTrusted) {
-        this.isTrusted = isTrusted;
-        this.lastSeen = LocalDateTime.now();
+    public void setLastSeen(LocalDateTime lastSeen) {
+        this.lastSeen = lastSeen;
     }
 }

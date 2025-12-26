@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class LoginEvent {
@@ -11,27 +11,18 @@ public class LoginEvent {
     private Long id;
 
     private Long userId;
+    private String deviceId;
     private String ipAddress;
     private String location;
-    private String deviceId;
     private String loginStatus;
     private LocalDateTime timestamp;
 
-    public LoginEvent() {
-        this.timestamp = LocalDateTime.now();
-    }
-
-    public LoginEvent(Long userId, String ipAddress, String location, String deviceId, String loginStatus) {
-        this.userId = userId;
-        this.ipAddress = ipAddress;
-        this.location = location;
-        this.deviceId = deviceId;
-        this.loginStatus = loginStatus;
-        this.timestamp = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -40,6 +31,14 @@ public class LoginEvent {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getIpAddress() {
@@ -58,14 +57,6 @@ public class LoginEvent {
         this.location = location;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
     public String getLoginStatus() {
         return loginStatus;
     }
@@ -76,5 +67,9 @@ public class LoginEvent {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }
