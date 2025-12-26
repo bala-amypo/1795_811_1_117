@@ -5,12 +5,11 @@ import com.example.demo.service.UserAccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Accounts", description = "Operations on user accounts")
+@Tag(name = "User Management")
 public class UserAccountController {
 
     private final UserAccountService userService;
@@ -19,7 +18,7 @@ public class UserAccountController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<UserAccount> create(@RequestBody UserAccount user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
@@ -30,12 +29,12 @@ public class UserAccountController {
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<UserAccount> updateStatus(@PathVariable Long id, @RequestBody String status) {
+    public ResponseEntity<UserAccount> updateStatus(@PathVariable Long id, @RequestParam String status) {
         return ResponseEntity.ok(userService.updateUserStatus(id, status));
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserAccount>> getAll() {
+    @GetMapping("/")
+    public ResponseEntity<List<UserAccount>> listAll() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 }

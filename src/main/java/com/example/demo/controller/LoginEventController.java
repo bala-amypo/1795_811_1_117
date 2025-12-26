@@ -5,12 +5,11 @@ import com.example.demo.service.LoginEventService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/logins")
-@Tag(name = "Login Events", description = "Operations on login events")
+@Tag(name = "Login Events")
 public class LoginEventController {
 
     private final LoginEventService loginService;
@@ -20,7 +19,7 @@ public class LoginEventController {
     }
 
     @PostMapping("/record")
-    public ResponseEntity<LoginEvent> recordLogin(@RequestBody LoginEvent event) {
+    public ResponseEntity<LoginEvent> record(@RequestBody LoginEvent event) {
         return ResponseEntity.ok(loginService.recordLogin(event));
     }
 
@@ -34,8 +33,8 @@ public class LoginEventController {
         return ResponseEntity.ok(loginService.getSuspiciousLogins(userId));
     }
 
-    @GetMapping
-    public ResponseEntity<List<LoginEvent>> getAll() {
+    @GetMapping("/")
+    public ResponseEntity<List<LoginEvent>> listAll() {
         return ResponseEntity.ok(loginService.getAllEvents());
     }
 }

@@ -5,12 +5,11 @@ import com.example.demo.service.ViolationRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/violations")
-@Tag(name = "Violation Records", description = "Operations on violation records")
+@Tag(name = "Violation Management")
 public class ViolationRecordController {
 
     private final ViolationRecordService violationService;
@@ -19,8 +18,8 @@ public class ViolationRecordController {
         this.violationService = violationService;
     }
 
-    @PostMapping
-    public ResponseEntity<ViolationRecord> logViolation(@RequestBody ViolationRecord violation) {
+    @PostMapping("/")
+    public ResponseEntity<ViolationRecord> log(@RequestBody ViolationRecord violation) {
         return ResponseEntity.ok(violationService.logViolation(violation));
     }
 
@@ -30,17 +29,17 @@ public class ViolationRecordController {
     }
 
     @PutMapping("/{id}/resolve")
-    public ResponseEntity<ViolationRecord> markResolved(@PathVariable Long id) {
+    public ResponseEntity<ViolationRecord> resolve(@PathVariable Long id) {
         return ResponseEntity.ok(violationService.markResolved(id));
     }
 
     @GetMapping("/unresolved")
-    public ResponseEntity<List<ViolationRecord>> getUnresolved() {
+    public ResponseEntity<List<ViolationRecord>> unresolved() {
         return ResponseEntity.ok(violationService.getUnresolvedViolations());
     }
 
-    @GetMapping
-    public ResponseEntity<List<ViolationRecord>> getAll() {
+    @GetMapping("/")
+    public ResponseEntity<List<ViolationRecord>> all() {
         return ResponseEntity.ok(violationService.getAllViolations());
     }
 }
