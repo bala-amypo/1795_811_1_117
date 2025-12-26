@@ -5,8 +5,6 @@ import com.example.demo.entity.PolicyRule;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.repository.ViolationRecordRepository;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class RuleEvaluationUtil {
@@ -20,20 +18,18 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        List<PolicyRule> rules = ruleRepo.findByActiveTrue();
-
-        for (PolicyRule r : rules) {
-            if (event.getLoginStatus() != null && r.getConditionsJson() != null) {
-                if (event.getLoginStatus().contains("FAILED") && r.getConditionsJson().contains("FAILED")) {
-                    ViolationRecord v = new ViolationRecord();
-                    v.setUserId(event.getUserId());
-                    v.setEventId(event.getId());
-                    v.setSeverity(r.getSeverity());
-                    v.setDetails("Rule triggered");
-                    v.setResolved(false);
-                    v.setTimestamp(LocalDateTime.now());
-                    violationRepo.save(v);
-                }
+        List<PolicyRule> activeRules = ruleRepo.findByActiveTrue();
+        for (PolicyRule rule : activeRules) {
+            if (event.getLoginStatus() != null && event.getLoginStatus().equalsIgnoreCase(rule.getConditionsJson())) {
+                ViolationRecord violation = new ViolationRecord();
+                violation.setUserId(event.getUserId());
+                violation.setPolicyRuleId(rule.getId());
+                violation.setEventId(event.getId());
+                violation.setViolationType("IT_POLICY_VIOLATION");
+                violation.setDetails("Violation detected based on rule: " + rule.getRuleCode());
+                violation.setSeverity(rule.getSeverity());
+                violation.setResolved(false);
+                violationRepo.save(violation);
             }
         }
     }

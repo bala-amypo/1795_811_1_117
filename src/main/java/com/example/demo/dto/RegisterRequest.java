@@ -1,14 +1,21 @@
 package com.example.demo.dto;
 
 public class RegisterRequest {
-
+    private String employeeId;
     private String username;
-
     private String email;
-
     private String password;
-
     private String role;
+
+    public RegisterRequest() {}
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public String getUsername() {
         return username;
