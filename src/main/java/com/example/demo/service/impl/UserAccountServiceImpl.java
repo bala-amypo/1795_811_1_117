@@ -1,35 +1,39 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-import org.springframework.stereotype.Service;
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Service
+import java.util.List;
+
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository repository;
+    private final UserAccountRepository repo;
+    private final PasswordEncoder encoder;
 
-    public UserAccountServiceImpl(UserAccountRepository repository) {
-        this.repository = repository;
+    public UserAccountServiceImpl(UserAccountRepository repo, PasswordEncoder encoder) {
+        this.repo = repo;
+        this.encoder = encoder;
     }
 
-    public UserAccount createUser(UserAccount userAccount) {
-        return repository.save(userAccount);
+    public UserAccount createUser(UserAccount user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repo.save(user);
     }
 
     public UserAccount getUserById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    public UserAccount updateUserStatus(Long id, String status) {
-        UserAccount user = repository.findById(id).orElse(null);
-        user.setStatus(status);
-        return repository.save(user);
+        return repo.findById(id).orElse(null);
     }
 
     public List<UserAccount> getAllUsers() {
-        return repository.findAll();
+        return repo.findAll();
+    }
+
+    public UserAccount updateUserStatus(Long id, String status) {
+        UserAccount u = repo.findById(id).orElse(null);
+        if (u == null) return null;
+        u.setStatus(status);
+        return repo.save(u);
     }
 }

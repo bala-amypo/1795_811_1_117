@@ -1,17 +1,14 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.entity.ViolationRecord;
+
+import java.util.List;
 
 public interface ViolationRecordService {
 
-    ViolationRecord logViolation(ViolationRecord violationRecord);
-
-    ViolationRecord markResolved(Long id);
-
-    List<ViolationRecord> getViolationsByUser(Long userId);
+    ViolationRecord logViolation(ViolationRecord v);
 
     List<ViolationRecord> getUnresolvedViolations();
 
-    List<ViolationRecord> getAllViolations();
+    ViolationRecord markResolved(Long id);
 }
