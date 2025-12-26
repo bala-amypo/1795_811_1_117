@@ -8,14 +8,17 @@ import com.example.demo.security.JwtUtil;
 import com.example.demo.service.*;
 import com.example.demo.service.impl.*;
 import com.example.demo.util.RuleEvaluationUtil;
+
 import org.mockito.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -34,14 +37,19 @@ public class ItPolicyMasterTestSuiteTest {
     private PolicyRuleService ruleService;
     private ViolationRecordService violationService;
     private RuleEvaluationUtil ruleEvaluator;
+
     private JwtUtil jwtUtil;
 
     @BeforeClass
     public void init() {
         MockitoAnnotations.openMocks(this);
+
         PasswordEncoder encoder = new BCryptPasswordEncoder();
+
         userService = new UserAccountServiceImpl(userRepo, encoder);
+
         jwtUtil = new JwtUtil("TestSecretKeyForJWT1234567890", 3600000L, true);
+
         ruleEvaluator = new RuleEvaluationUtil(ruleRepo, violationRepo);
         loginService = new LoginEventServiceImpl(loginRepo, ruleEvaluator);
         deviceService = new DeviceProfileServiceImpl(deviceRepo);
@@ -50,10 +58,14 @@ public class ItPolicyMasterTestSuiteTest {
     }
 
     @Test(priority = 1)
-    public void testAppName() { Assert.assertTrue("IT Policy Violation Engine".contains("Policy")); }
+    public void testAppName() {
+        Assert.assertTrue("IT Policy Violation Engine".contains("Policy"));
+    }
 
     @Test(priority = 2)
-    public void testServletMock() { Assert.assertTrue("Servlet Running".contains("Running")); }
+    public void testServletMock() {
+        Assert.assertTrue("Servlet Running".contains("Running"));
+    }
 
     @Test(priority = 3)
     public void testCreateUser() {
@@ -112,7 +124,7 @@ public class ItPolicyMasterTestSuiteTest {
     @Test(priority = 10)
     public void testSuspiciousEvents() {
         when(loginRepo.findByUserIdAndLoginStatus(1L, "FAILED"))
-            .thenReturn(List.of(new LoginEvent(), new LoginEvent()));
+                .thenReturn(List.of(new LoginEvent(), new LoginEvent()));
         Assert.assertEquals(loginService.getSuspiciousLogins(1L).size(), 2);
     }
 
@@ -216,7 +228,8 @@ public class ItPolicyMasterTestSuiteTest {
 
     @Test(priority = 23)
     public void testGetUnresolvedViolations() {
-        when(violationRepo.findByResolvedFalse()).thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
+        when(violationRepo.findByResolvedFalse())
+                .thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
         Assert.assertEquals(violationService.getUnresolvedViolations().size(), 2);
     }
 
