@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rules")
-@Tag(name = "Policy Rules")
+@Tag(name = "PolicyRule")
 public class PolicyRuleController {
 
     private final PolicyRuleService ruleService;
@@ -29,7 +29,7 @@ public class PolicyRuleController {
     }
 
     @GetMapping("/active")
-    public ResponseEntity<List<PolicyRule>> listActive() {
+    public ResponseEntity<List<PolicyRule>> getActive() {
         return ResponseEntity.ok(ruleService.getActiveRules());
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/violations")
-@Tag(name = "Violation Management")
+@Tag(name = "ViolationRecord")
 public class ViolationRecordController {
 
     private final ViolationRecordService violationService;
@@ -34,7 +34,7 @@ public class ViolationRecordController {
     }
 
     @GetMapping("/unresolved")
-    public ResponseEntity<List<ViolationRecord>> unresolved() {
+    public ResponseEntity<List<ViolationRecord>> getUnresolved() {
         return ResponseEntity.ok(violationService.getUnresolvedViolations());
     }
 
