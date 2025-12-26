@@ -1,40 +1,28 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.UserAccount;
-import com.example.demo.service.UserAccountService;
+import com.example.demo.repository.UserAccountRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user-accounts")
 public class UserAccountController {
 
-    private final UserAccountService service;
+    private final UserAccountRepository repository;
 
-    public UserAccountController(UserAccountService service) {
-        this.service = service;
+    public UserAccountController(UserAccountRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
-    public UserAccount create(@RequestBody UserAccount user) {
-        return service.createUser(user);
-    }
-
-    @GetMapping("/{id}")
-    public UserAccount get(@PathVariable Long id) {
-        return service.getUserById(id);
-    }
-
-    @PutMapping("/{id}/status")
-    public UserAccount updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status
-    ) {
-        return service.updateUserStatus(id, status);
+    public UserAccount create(@RequestBody UserAccount userAccount) {
+        return repository.save(userAccount);
     }
 
     @GetMapping
-    public List<UserAccount> all() {
-        return service.getAllUsers();
+    public List<UserAccount> getAll() {
+        return repository.findAll();
     }
 }

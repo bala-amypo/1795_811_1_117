@@ -1,21 +1,20 @@
 package com.example.demo.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.entity.UserAccount;
-import com.example.demo.service.UserAccountService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserAccountService service;
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String username,
+                                        @RequestParam String password) {
 
-    public AuthController(UserAccountService service) {
-        this.service = service;
-    }
+        if (username.equals("admin") && password.equals("admin")) {
+            return ResponseEntity.ok("Login Successful");
+        }
 
-    @PostMapping("/register")
-    public UserAccount register(@RequestBody UserAccount user) {
-        return service.createUser(user);
+        return ResponseEntity.badRequest().body("Invalid Credentials");
     }
 }
