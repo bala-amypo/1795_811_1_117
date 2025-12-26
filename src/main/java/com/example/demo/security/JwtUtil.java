@@ -29,13 +29,10 @@ public class JwtUtil {
         claims.put("email", email);
         claims.put("role", role);
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMs);
-
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validityInMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -62,10 +59,7 @@ public class JwtUtil {
     }
 
     public Long getUserId(String token) {
-        Object userId = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().get("userId");
-        if (userId instanceof Integer) {
-            return ((Integer) userId).longValue();
-        }
-        return (Long) userId;
+        Object val = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().get("userId");
+        return (val instanceof Integer) ? ((Integer) val).longValue() : (Long) val;
     }
 }
