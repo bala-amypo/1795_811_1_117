@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.PolicyRule;
+import com.example.demo.entity.DeviceProfile;
 import java.util.List;
+import java.util.Optional;
 
-public interface PolicyRuleService {
-    PolicyRule createRule(PolicyRule rule);
-    PolicyRule updateRule(Long id, PolicyRule rule);
-    List<PolicyRule> getActiveRules();
-    PolicyRule getRuleByCode(String ruleCode);
-    List<PolicyRule> getAllRules();
+public interface DeviceProfileService {
+
+    DeviceProfile registerDevice(DeviceProfile device);
+
+    DeviceProfile updateTrustStatus(Long id, boolean trust);
+
+    List<DeviceProfile> getDevicesByUser(Long userId);
+
+    Optional<DeviceProfile> findByDeviceId(String deviceId);
 }
