@@ -9,35 +9,43 @@ import java.util.List;
 @Service
 public class PolicyRuleServiceImpl implements PolicyRuleService {
 
-    private final PolicyRuleRepository ruleRepo;
+    private final PolicyRuleRepository policyRuleRepository;
 
-    public PolicyRuleServiceImpl(PolicyRuleRepository ruleRepo) {
-        this.ruleRepo = ruleRepo;
+    public PolicyRuleServiceImpl(PolicyRuleRepository policyRuleRepository) {
+        this.policyRuleRepository = policyRuleRepository;
     }
 
     @Override
     public PolicyRule createRule(PolicyRule rule) {
-        return ruleRepo.save(rule);
+        return policyRuleRepository.save(rule);
     }
 
     @Override
     public PolicyRule updateRule(Long id, PolicyRule rule) {
-        rule.setId(id);
-        return ruleRepo.save(rule);
+        PolicyRule existingRule = policyRuleRepository.findById(id).orElse(null);
+        if (existingRule != null) {
+            existingRule.setRuleCode(rule.getRuleCode());
+            existingRule.setDescription(rule.getDescription());
+            existingRule.setSeverity(rule.getSeverity());
+            existingRule.setConditionsJson(rule.getConditionsJson());
+            existingRule.setActive(rule.getActive());
+            return policyRuleRepository.save(existingRule);
+        }
+        return null;
     }
 
     @Override
     public List<PolicyRule> getActiveRules() {
-        return ruleRepo.findByActiveTrue();
+        return policyRuleRepository.findByActiveTrue();
     }
 
     @Override
     public PolicyRule getRuleByCode(String ruleCode) {
-        return ruleRepo.findByRuleCode(ruleCode).orElse(null);
+        return policyRuleRepository.findByRuleCode(ruleCode).orElse(null);
     }
 
     @Override
     public List<PolicyRule> getAllRules() {
-        return ruleRepo.findAll();
+        return policyRuleRepository.findAll();
     }
 }

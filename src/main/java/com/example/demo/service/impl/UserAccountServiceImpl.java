@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
+
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -19,7 +20,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount createUser(UserAccount user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userAccountRepository.save(user);
     }
 
@@ -30,10 +33,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount updateUserStatus(Long id, String status) {
-        UserAccount u = getUserById(id);
-        if (u != null) {
-            u.setStatus(status);
-            return userAccountRepository.save(u);
+        UserAccount user = getUserById(id);
+        if (user != null) {
+            user.setStatus(status);
+            return userAccountRepository.save(user);
         }
         return null;
     }

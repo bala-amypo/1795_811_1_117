@@ -9,39 +9,39 @@ import java.util.List;
 @Service
 public class ViolationRecordServiceImpl implements ViolationRecordService {
 
-    private final ViolationRecordRepository violationRepo;
+    private final ViolationRecordRepository violationRecordRepository;
 
-    public ViolationRecordServiceImpl(ViolationRecordRepository violationRepo) {
-        this.violationRepo = violationRepo;
+    public ViolationRecordServiceImpl(ViolationRecordRepository violationRecordRepository) {
+        this.violationRecordRepository = violationRecordRepository;
     }
 
     @Override
     public ViolationRecord logViolation(ViolationRecord violation) {
-        return violationRepo.save(violation);
+        return violationRecordRepository.save(violation);
     }
 
     @Override
     public List<ViolationRecord> getViolationsByUser(Long userId) {
-        return violationRepo.findByUserId(userId);
+        return violationRecordRepository.findByUserId(userId);
     }
 
     @Override
     public ViolationRecord markResolved(Long id) {
-        ViolationRecord v = violationRepo.findById(id).orElse(null);
-        if (v != null) {
-            v.setResolved(true);
-            return violationRepo.save(v);
+        ViolationRecord violation = violationRecordRepository.findById(id).orElse(null);
+        if (violation != null) {
+            violation.setResolved(true);
+            return violationRecordRepository.save(violation);
         }
         return null;
     }
 
     @Override
     public List<ViolationRecord> getUnresolvedViolations() {
-        return violationRepo.findByResolvedFalse();
+        return violationRecordRepository.findByResolvedFalse();
     }
 
     @Override
     public List<ViolationRecord> getAllViolations() {
-        return violationRepo.findAll();
+        return violationRecordRepository.findAll();
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class LoginEventServiceImpl implements LoginEventService {
+
     private final LoginEventRepository loginEventRepository;
     private final RuleEvaluationUtil ruleEvaluationUtil;
 
@@ -19,9 +20,9 @@ public class LoginEventServiceImpl implements LoginEventService {
 
     @Override
     public LoginEvent recordLogin(LoginEvent event) {
-        LoginEvent saved = loginEventRepository.save(event);
-        ruleEvaluationUtil.evaluateLoginEvent(saved);
-        return saved;
+        LoginEvent savedEvent = loginEventRepository.save(event);
+        ruleEvaluationUtil.evaluateLoginEvent(savedEvent);
+        return savedEvent;
     }
 
     @Override

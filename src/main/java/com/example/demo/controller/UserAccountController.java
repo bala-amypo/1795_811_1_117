@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Management")
+@Tag(name = "UserAccount")
 public class UserAccountController {
 
     private final UserAccountService userService;
@@ -24,7 +24,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserAccount> getById(@PathVariable Long id) {
+    public ResponseEntity<UserAccount> get(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
@@ -34,7 +34,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserAccount>> listAll() {
+    public ResponseEntity<List<UserAccount>> all() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 }
