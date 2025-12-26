@@ -1,24 +1,19 @@
 package com.example.demo;
 
 import com.example.demo.controller.*;
-import com.example.demo.dto.*;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.*;
 import com.example.demo.service.impl.*;
 import com.example.demo.util.RuleEvaluationUtil;
-
 import org.mockito.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -37,20 +32,17 @@ public class ItPolicyMasterTestSuiteTest {
     private PolicyRuleService ruleService;
     private ViolationRecordService violationService;
     private RuleEvaluationUtil ruleEvaluator;
-
     private JwtUtil jwtUtil;
 
     @BeforeClass
     public void init() {
         MockitoAnnotations.openMocks(this);
-
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-
+        
         userService = new UserAccountServiceImpl(userRepo, encoder);
-
-        jwtUtil = new JwtUtil("TestSecretKeyForJWT1234567890", 3600000L, true);
-
+        jwtUtil = new JwtUtil("TestSecretKeyForJWT1234567890TestSecretKeyForJWT1234567890", 3600000L, true);
         ruleEvaluator = new RuleEvaluationUtil(ruleRepo, violationRepo);
+        
         loginService = new LoginEventServiceImpl(loginRepo, ruleEvaluator);
         deviceService = new DeviceProfileServiceImpl(deviceRepo);
         ruleService = new PolicyRuleServiceImpl(ruleRepo);
@@ -123,8 +115,7 @@ public class ItPolicyMasterTestSuiteTest {
 
     @Test(priority = 10)
     public void testSuspiciousEvents() {
-        when(loginRepo.findByUserIdAndLoginStatus(1L, "FAILED"))
-                .thenReturn(List.of(new LoginEvent(), new LoginEvent()));
+        when(loginRepo.findByUserIdAndLoginStatus(1L, "FAILED")).thenReturn(List.of(new LoginEvent(), new LoginEvent()));
         Assert.assertEquals(loginService.getSuspiciousLogins(1L).size(), 2);
     }
 
@@ -191,12 +182,17 @@ public class ItPolicyMasterTestSuiteTest {
     @Test(priority = 19)
     public void testViolationTriggered() {
         PolicyRule r = new PolicyRule();
+        r.setId(1L);
         r.setActive(true);
         r.setConditionsJson("FAILED");
         r.setSeverity("HIGH");
+        r.setRuleCode("RULE_01");
+
         when(ruleRepo.findByActiveTrue()).thenReturn(List.of(r));
+
         LoginEvent ev = new LoginEvent();
         ev.setLoginStatus("FAILED");
+
         ruleEvaluator.evaluateLoginEvent(ev);
         verify(violationRepo, times(1)).save(any(ViolationRecord.class));
     }
@@ -228,8 +224,7 @@ public class ItPolicyMasterTestSuiteTest {
 
     @Test(priority = 23)
     public void testGetUnresolvedViolations() {
-        when(violationRepo.findByResolvedFalse())
-                .thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
+        when(violationRepo.findByResolvedFalse()).thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
         Assert.assertEquals(violationService.getUnresolvedViolations().size(), 2);
     }
 
