@@ -8,13 +8,18 @@ public class LoginEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private Long userId;
+    
     @Column(nullable = false)
     private String ipAddress;
+    
     private String location;
+    
     @Column(nullable = false)
     private String deviceId;
-    private LocalDateTime timestamp;
+    
+    private LocalDateTime timestamp = LocalDateTime.now();
     private String loginStatus;
 
     public Long getId() { return id; }

@@ -8,19 +8,20 @@ public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @Column(unique = true)
     private String employeeId;
+    
     @Column(unique = true)
     private String username;
+    
     @Column(unique = true)
     private String email;
+    
     private String password;
-    private String role; 
+    private String role;
     private String status = "ACTIVE";
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() { createdAt = LocalDateTime.now(); }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

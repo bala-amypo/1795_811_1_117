@@ -8,17 +8,15 @@ public class ViolationRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private Long userId;
     private Long policyRuleId;
     private Long eventId;
     private String violationType;
     private String details;
     private String severity;
-    private LocalDateTime detectedAt;
+    private LocalDateTime detectedAt = LocalDateTime.now();
     private Boolean resolved = false;
-
-    @PrePersist
-    protected void onDetect() { detectedAt = LocalDateTime.now(); }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
