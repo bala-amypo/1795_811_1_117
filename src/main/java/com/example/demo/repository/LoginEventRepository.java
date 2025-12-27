@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface LoginEventRepository extends JpaRepository<LoginEvent, Long> {
 
-    // Custom query method to find suspicious logins by userId
-    List<LoginEvent> findSuspiciousByUserId(Long userId);
+    List<LoginEvent> findByUserId(Long userId);
+
+    List<LoginEvent> findByUserIdAndSuspiciousTrue(Long userId); // for suspicious logins
 }
