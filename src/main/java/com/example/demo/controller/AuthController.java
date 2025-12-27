@@ -1,45 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.dto.JwtResponse;
-import com.example.demo.entity.UserAccount;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserAccountService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.security.JwtTokenProvider;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserAccountService userService;
-    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider tokenProvider;
 
-    public AuthController(UserAccountService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<UserAccount> register(@RequestBody RegisterRequest req) {
-        UserAccount u = new UserAccount();
-        u.setUsername(req.getUsername());
-        u.setEmail(req.getEmail());
-        u.setPassword(req.getPassword());
-        u.setRole("USER");
-        return ResponseEntity.ok(userService.createUser(u));
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider tokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest req) {
-        UserAccount user = userService.findByUsername(req.getUsername()).orElse(null);
-        String token = jwtUtil.generateToken(
-                user.getUsername(),
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
+    public Map<String, String> login(
+            @RequestParam String username,
+            @RequestParam String password) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
         );
-        return ResponseEntity.ok(new JwtResponse(token));
+
+        String token = tokenProvider.generateToken(username);
+
+        return Map.of("token", token);
     }
 }
