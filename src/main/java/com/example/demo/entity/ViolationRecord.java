@@ -43,4 +43,6 @@ public class ViolationRecord {
     public LocalDateTime getDetectedAt() { return detectedAt; }
     public void setDetectedAt(LocalDateTime detectedAt) { this.detectedAt = detectedAt; }
 
-    public
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+}
