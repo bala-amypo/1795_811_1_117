@@ -24,16 +24,16 @@ public class SwaggerConfig {
                 .bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER);
 
-        // Apply JWT globally
+        
         SecurityRequirement securityRequirement = new SecurityRequirement()
                 .addList("Bearer Authentication");
 
         return new OpenAPI()
-                // Server with port number
+               
                 .servers(List.of(
                         new Server().url("https://9402.pro604cr.amypo.ai/")
                 ))
-                // Swagger Authorize button
+               
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication", securityScheme)
                 )
