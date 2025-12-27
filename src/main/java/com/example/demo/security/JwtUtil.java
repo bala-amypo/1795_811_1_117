@@ -1,56 +1,25 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
-
+@Component
 public class JwtUtil {
 
-    private final Key key;
-    private final long validityInMs;
-    private final boolean isTestMode;
+    private final JwtTokenProvider provider;
 
-    public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.validityInMs = validityInMs;
-        this.isTestMode = isTestMode;
+    public JwtUtil(JwtTokenProvider provider) {
+        this.provider = provider;
     }
 
-    public String generateToken(String username, Long userId, String email, String role) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("userId", userId);
-        claims.put("email", email);
-        claims.put("role", role);
-
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMs);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+    public String generateToken(String username) {
+        return provider.generateToken(username);
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return provider.validateToken(token);
     }
 
-    public String getEmail(String token) {
-        return getClaims(token).get("email", String.class);
+    public String extractUsername(String token) {
+        return provider.getUsernameFromToken(token);
     }
-
-    public String getRole(String token) {
-        return getClaims(token).get("role", String.class);
-    }
-
-    public Long getUserId(String token) {
-        return getClaims(token).get("userId
+}
