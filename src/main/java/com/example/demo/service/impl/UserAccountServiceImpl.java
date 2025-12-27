@@ -4,50 +4,43 @@ import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private final UserAccountRepository userAccountRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserAccountRepository repository;
+    private final PasswordEncoder encoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
-        this.userAccountRepository = userAccountRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UserAccountServiceImpl(UserAccountRepository repository, PasswordEncoder encoder) {
+        this.repository = repository;
+        this.encoder = encoder;
     }
 
-    @Override
     public UserAccount createUser(UserAccount user) {
-        if (user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        return userAccountRepository.save(user);
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repository.save(user);
     }
 
-    @Override
     public UserAccount getUserById(Long id) {
-        return userAccountRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
-    @Override
     public UserAccount updateUserStatus(Long id, String status) {
-        UserAccount user = getUserById(id);
+        UserAccount user = repository.findById(id).orElse(null);
         if (user != null) {
             user.setStatus(status);
-            return userAccountRepository.save(user);
+            return repository.save(user);
         }
         return null;
     }
 
-    @Override
     public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+        return repository.findAll();
     }
 
-    @Override
-    public UserAccount findByUsername(String username) {
-        return userAccountRepository.findByUsername(username).orElse(null);
+    public Optional<UserAccount> findByUsername(String username) {
+        return repository.findByUsername(username);
     }
 }

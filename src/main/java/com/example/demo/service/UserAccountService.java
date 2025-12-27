@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.UserAccount;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserAccountService {
 
@@ -13,5 +14,5 @@ public interface UserAccountService {
 
     List<UserAccount> getAllUsers();
 
-    UserAccount findByUsername(String username);
+    Optional<UserAccount> findByUsername(String username);
 }

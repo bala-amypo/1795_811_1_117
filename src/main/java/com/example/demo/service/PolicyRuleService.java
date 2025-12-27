@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.PolicyRule;
 import java.util.List;
+import java.util.Optional;
 
 public interface PolicyRuleService {
 
@@ -11,7 +12,7 @@ public interface PolicyRuleService {
 
     List<PolicyRule> getActiveRules();
 
-    PolicyRule getRuleByCode(String ruleCode);
+    Optional<PolicyRule> getRuleByCode(String ruleCode);
 
     List<PolicyRule> getAllRules();
 }
