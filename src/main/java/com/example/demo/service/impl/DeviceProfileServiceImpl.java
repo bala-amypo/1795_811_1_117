@@ -26,7 +26,7 @@ public class DeviceProfileServiceImpl implements DeviceProfileService {
     public DeviceProfile updateTrustStatus(Long id, boolean trust) {
         DeviceProfile device = repository.findById(id).orElse(null);
         if (device != null) {
-            device.setTrusted(trust); // make sure DeviceProfile has 'private Boolean trusted;' with setter/getter
+            device.setIsTrusted(trust); // ✅ matches the entity
             return repository.save(device);
         }
         return null;

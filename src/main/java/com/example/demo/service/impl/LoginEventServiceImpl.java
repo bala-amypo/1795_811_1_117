@@ -7,6 +7,7 @@ import com.example.demo.util.RuleEvaluationUtil;
 
 import java.util.List;
 
+@Service
 public class LoginEventServiceImpl implements LoginEventService {
 
     private final LoginEventRepository repository;
