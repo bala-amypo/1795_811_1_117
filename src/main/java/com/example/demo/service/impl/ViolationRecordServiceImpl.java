@@ -33,6 +33,11 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
     }
 
     @Override
+    public List<ViolationRecord> getUnresolvedViolations() {
+        return repository.findByResolvedFalse(); // repository method must exist
+    }
+
+    @Override
     public Optional<ViolationRecord> getRecordById(Long id) {
         return repository.findById(id);
     }

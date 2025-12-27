@@ -31,4 +31,9 @@ public class LoginEventServiceImpl implements LoginEventService {
     public Optional<LoginEvent> getEventById(Long id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<LoginEvent> getSuspiciousLogins(Long userId) {
+        return repository.findSuspiciousByUserId(userId); // make sure repository method exists
+    }
 }
