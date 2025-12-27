@@ -5,11 +5,12 @@ import com.example.demo.entity.PolicyRule;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.repository.ViolationRecordRepository;
-import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
 public class RuleEvaluationUtil {
+
     private final PolicyRuleRepository ruleRepo;
     private final ViolationRecordRepository violationRepo;
 
@@ -19,16 +20,21 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        List<PolicyRule> activeRules = ruleRepo.findByActiveTrue();
-        for (PolicyRule rule : activeRules) {
-            if (event.getLoginStatus() != null && event.getLoginStatus().equals(rule.getConditionsJson())) {
+        List<PolicyRule> rules = ruleRepo.findByActiveTrue();
+        for (PolicyRule rule : rules) {
+            if (event.getLoginStatus() != null &&
+                rule.getConditionsJson() != null &&
+                rule.getConditionsJson().contains(event.getLoginStatus())) {
+
                 ViolationRecord v = new ViolationRecord();
                 v.setUserId(event.getUserId());
-                v.setPolicyRuleId(rule.getId());
                 v.setEventId(event.getId());
-                v.setViolationType(rule.getRuleCode());
+                v.setPolicyRuleId(rule.getId());
                 v.setSeverity(rule.getSeverity());
-                v.setDetails("Condition matched: " + rule.getConditionsJson());
+                v.setDetails("Rule triggered: " + rule.getRuleCode());
+                v.setDetectedAt(LocalDateTime.now());
+                v.setResolved(false);
+
                 violationRepo.save(v);
             }
         }
