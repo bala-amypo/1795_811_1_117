@@ -6,7 +6,6 @@ import com.example.demo.service.LoginEventService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LoginEventServiceImpl implements LoginEventService {
@@ -18,22 +17,22 @@ public class LoginEventServiceImpl implements LoginEventService {
     }
 
     @Override
-    public LoginEvent createEvent(LoginEvent event) {
+    public LoginEvent recordLogin(LoginEvent event) {
         return repository.save(event);
+    }
+
+    @Override
+    public List<LoginEvent> getEventsByUser(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    @Override
+    public List<LoginEvent> getSuspiciousLogins(Long userId) {
+        return repository.findSuspiciousByUserId(userId);
     }
 
     @Override
     public List<LoginEvent> getAllEvents() {
         return repository.findAll();
-    }
-
-    @Override
-    public Optional<LoginEvent> getEventById(Long id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public List<LoginEvent> getSuspiciousLogins(Long userId) {
-        return repository.findSuspiciousByUserId(userId); // make sure repository method exists
     }
 }
