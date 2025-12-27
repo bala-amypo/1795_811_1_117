@@ -3,10 +3,12 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.DeviceProfile;
 import com.example.demo.repository.DeviceProfileRepository;
 import com.example.demo.service.DeviceProfileService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class DeviceProfileServiceImpl implements DeviceProfileService {
 
     private final DeviceProfileRepository repository;
@@ -15,23 +17,27 @@ public class DeviceProfileServiceImpl implements DeviceProfileService {
         this.repository = repository;
     }
 
+    @Override
     public DeviceProfile registerDevice(DeviceProfile device) {
         return repository.save(device);
     }
 
+    @Override
     public DeviceProfile updateTrustStatus(Long id, boolean trust) {
         DeviceProfile device = repository.findById(id).orElse(null);
         if (device != null) {
-            device.setIsTrusted(trust);
+            device.setTrusted(trust); // make sure DeviceProfile has 'private Boolean trusted;' with setter/getter
             return repository.save(device);
         }
         return null;
     }
 
+    @Override
     public List<DeviceProfile> getDevicesByUser(Long userId) {
         return repository.findByUserId(userId);
     }
 
+    @Override
     public Optional<DeviceProfile> findByDeviceId(String deviceId) {
         return repository.findByDeviceId(deviceId);
     }
