@@ -1,42 +1,30 @@
 package com.example.demo.util;
 
-import com.example.demo.entity.LoginEvent;
 import com.example.demo.entity.PolicyRule;
-import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
-import com.example.demo.repository.ViolationRecordRepository;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+@Component
 public class RuleEvaluationUtil {
 
     private final PolicyRuleRepository ruleRepo;
-    private final ViolationRecordRepository violationRepo;
 
-    public RuleEvaluationUtil(PolicyRuleRepository ruleRepo, ViolationRecordRepository violationRepo) {
+    public RuleEvaluationUtil(PolicyRuleRepository ruleRepo) {
         this.ruleRepo = ruleRepo;
-        this.violationRepo = violationRepo;
     }
 
-    public void evaluateLoginEvent(LoginEvent event) {
-        List<PolicyRule> rules = ruleRepo.findByActiveTrue();
-        for (PolicyRule rule : rules) {
-            if (event.getLoginStatus() != null &&
-                rule.getConditionsJson() != null &&
-                rule.getConditionsJson().contains(event.getLoginStatus())) {
+    // Example method to get all active rule codes
+    public void evaluateActiveRules() {
+        // Make sure your repository has findByActiveTrue() method
+        List<PolicyRule> activeRules = ruleRepo.findByActiveTrue();
 
-                ViolationRecord v = new ViolationRecord();
-                v.setUserId(event.getUserId());
-                v.setEventId(event.getId());
-                v.setPolicyRuleId(rule.getId());
-                v.setSeverity(rule.getSeverity());
-                v.setDetails("Rule triggered: " + rule.getRuleCode());
-                v.setDetectedAt(LocalDateTime.now());
-                v.setResolved(false);
-
-                violationRepo.save(v);
-            }
+        for (PolicyRule rule : activeRules) {
+            // Corrected getter
+            String code = rule.getCode();
+            System.out.println("Evaluating rule: " + code);
+            // Your evaluation logic here
         }
     }
 }
