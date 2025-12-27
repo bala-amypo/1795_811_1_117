@@ -16,7 +16,6 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
 
-        
         SecurityScheme securityScheme = new SecurityScheme()
                 .name("Authorization")
                 .type(SecurityScheme.Type.HTTP)
@@ -24,16 +23,13 @@ public class SwaggerConfig {
                 .bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER);
 
-        
         SecurityRequirement securityRequirement = new SecurityRequirement()
                 .addList("Bearer Authentication");
 
         return new OpenAPI()
-                
                 .servers(List.of(
-                        new Server().url(https://9402.pro604cr.amypo.ai/")
+                        new Server().url("https://9254.pro604cr.amypo.ai/")
                 ))
-                
                 .components(new Components()
                         .addSecuritySchemes("Bearer Authentication", securityScheme)
                 )
