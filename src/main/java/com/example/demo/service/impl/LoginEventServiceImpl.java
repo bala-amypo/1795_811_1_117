@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.LoginEvent;
 import com.example.demo.repository.LoginEventRepository;
 import com.example.demo.service.LoginEventService;
-import org.springframework.stereotype.Service; // ✅ required
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,17 +18,17 @@ public class LoginEventServiceImpl implements LoginEventService {
     }
 
     @Override
-    public LoginEvent registerLogin(LoginEvent event) {
+    public LoginEvent createEvent(LoginEvent event) {
         return repository.save(event);
     }
 
     @Override
-    public List<LoginEvent> getEventsByUser(Long userId) {
-        return repository.findByUserId(userId);
+    public List<LoginEvent> getAllEvents() {
+        return repository.findAll();
     }
 
     @Override
-    public Optional<LoginEvent> findById(Long id) {
+    public Optional<LoginEvent> getEventById(Long id) {
         return repository.findById(id);
     }
 }

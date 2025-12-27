@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.ViolationRecordRepository;
 import com.example.demo.service.ViolationRecordService;
-import org.springframework.stereotype.Service; // ✅ required
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
     }
 
     @Override
-    public List<ViolationRecord> getAllRecords() {
+    public List<ViolationRecord> getAllViolations() {
         return repository.findAll();
     }
 
