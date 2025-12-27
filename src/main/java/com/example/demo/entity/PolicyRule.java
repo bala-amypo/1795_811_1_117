@@ -9,7 +9,7 @@ public class PolicyRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ruleCode;
+    private String code; // changed from ruleCode to code
     private String description;
     private String severity;
     private String conditionsJson;
@@ -18,8 +18,8 @@ public class PolicyRule {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getRuleCode() { return ruleCode; }
-    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
+    public String getCode() { return code; } // added getter
+    public void setCode(String code) { this.code = code; } // added setter
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
