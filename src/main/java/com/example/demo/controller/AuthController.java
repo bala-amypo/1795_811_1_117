@@ -1,37 +1,40 @@
-package com.example.demo.controller;
+// package com.example.demo.controller;
 
-import com.example.demo.security.JwtTokenProvider;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+// import com.example.demo.dto.*;
+// import com.example.demo.entity.UserAccount;
+// import com.example.demo.security.JwtUtil;
+// import com.example.demo.service.UserAccountService;
+// import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+// @RestController
+// @RequestMapping("/auth")
+// public class AuthController {
 
-@RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+//     private final UserAccountService userService;
+//     private final JwtUtil jwtUtil;
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
+//     public AuthController(UserAccountService userService, JwtUtil jwtUtil) {
+//         this.userService = userService;
+//         this.jwtUtil = jwtUtil;
+//     }
 
-    public AuthController(
-            AuthenticationManager authenticationManager,
-            JwtTokenProvider tokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
-    }
+//     @PostMapping("/register")
+//     public UserAccount register(@RequestBody RegisterRequest request) {
 
-    @PostMapping("/login")
-    public Map<String, String> login(
-            @RequestParam String username,
-            @RequestParam String password) {
+//         UserAccount user = new UserAccount();
+//         user.setUsername(request.getUsername());
+//         user.setEmail(request.getEmail());
+//         user.setPassword(request.getPassword());
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+//         return userService.createUser(user);
+//     }
 
-        String token = tokenProvider.generateToken(username);
+//     @PostMapping("/login")
+//     public JwtResponse login(@RequestBody LoginRequest request) {
 
-        return Map.of("token", token);
-    }
-}
+//         String token = jwtUtil.generateToken(
+//                 request.getUsername(), 1L, "test@test.com", "USER");
+
+//         return new JwtResponse(token);
+//     }
+// }
