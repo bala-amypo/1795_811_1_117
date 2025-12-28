@@ -1,25 +1,35 @@
 package com.example.demo;
 
 import com.example.demo.controller.*;
+import com.example.demo.dto.*;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.*;
 import com.example.demo.service.impl.*;
 import com.example.demo.util.RuleEvaluationUtil;
+
 import org.mockito.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Final + Stable Master Test Suite
+ * Option B → Mockito Only, NO Spring Context, NO JwtUtil Mocking
+ */
 @Listeners(TestResultListener.class)
 public class ItPolicyMasterTestSuiteTest {
 
+    // ------------------ MOCKS ------------------
     @Mock private UserAccountRepository userRepo;
     @Mock private LoginEventRepository loginRepo;
     @Mock private DeviceProfileRepository deviceRepo;
@@ -32,23 +42,29 @@ public class ItPolicyMasterTestSuiteTest {
     private PolicyRuleService ruleService;
     private ViolationRecordService violationService;
     private RuleEvaluationUtil ruleEvaluator;
-    private JwtUtil jwtUtil;
+
+    private JwtUtil jwtUtil;  // REAL INSTANCE (NO MOCK)
 
     @BeforeClass
     public void init() {
         MockitoAnnotations.openMocks(this);
+
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        
+
         userService = new UserAccountServiceImpl(userRepo, encoder);
-        jwtUtil = new JwtUtil("TestSecretKeyForJWT1234567890TestSecretKeyForJWT1234567890", 3600000L, true);
+
+        jwtUtil = new JwtUtil("TestSecretKeyForJWT1234567890", 3600000L, true);
+
         ruleEvaluator = new RuleEvaluationUtil(ruleRepo, violationRepo);
-        
         loginService = new LoginEventServiceImpl(loginRepo, ruleEvaluator);
         deviceService = new DeviceProfileServiceImpl(deviceRepo);
         ruleService = new PolicyRuleServiceImpl(ruleRepo);
         violationService = new ViolationRecordServiceImpl(violationRepo);
     }
 
+    // --------------------------------------------------------
+    // 1) BASIC APP CHECKS
+    // --------------------------------------------------------
     @Test(priority = 1)
     public void testAppName() {
         Assert.assertTrue("IT Policy Violation Engine".contains("Policy"));
@@ -59,12 +75,17 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertTrue("Servlet Running".contains("Running"));
     }
 
+    // --------------------------------------------------------
+    // 2) USER ACCOUNT TESTS
+    // --------------------------------------------------------
     @Test(priority = 3)
     public void testCreateUser() {
         UserAccount u = new UserAccount();
         u.setEmail("a@test.com");
         u.setPassword("pwd");
+
         when(userRepo.save(any())).thenReturn(u);
+
         Assert.assertEquals(userService.createUser(u).getEmail(), "a@test.com");
     }
 
@@ -81,8 +102,10 @@ public class ItPolicyMasterTestSuiteTest {
         UserAccount u = new UserAccount();
         u.setId(1L);
         u.setStatus("ACTIVE");
+
         when(userRepo.findById(1L)).thenReturn(Optional.of(u));
         when(userRepo.save(any())).thenReturn(u);
+
         Assert.assertEquals(userService.updateUserStatus(1L, "SUSPENDED").getStatus(), "SUSPENDED");
     }
 
@@ -99,6 +122,9 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertEquals(u.getUsername(), "bob");
     }
 
+    // --------------------------------------------------------
+    // 3) LOGIN EVENT TESTS
+    // --------------------------------------------------------
     @Test(priority = 8)
     public void testRecordLoginEvent() {
         LoginEvent ev = new LoginEvent();
@@ -115,7 +141,8 @@ public class ItPolicyMasterTestSuiteTest {
 
     @Test(priority = 10)
     public void testSuspiciousEvents() {
-        when(loginRepo.findByUserIdAndLoginStatus(1L, "FAILED")).thenReturn(List.of(new LoginEvent(), new LoginEvent()));
+        when(loginRepo.findByUserIdAndLoginStatus(1L, "FAILED"))
+                .thenReturn(List.of(new LoginEvent(), new LoginEvent()));
         Assert.assertEquals(loginService.getSuspiciousLogins(1L).size(), 2);
     }
 
@@ -126,6 +153,9 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertEquals(e.getIpAddress(), "1.1.1.1");
     }
 
+    // --------------------------------------------------------
+    // 4) DEVICE PROFILE TESTS
+    // --------------------------------------------------------
     @Test(priority = 12)
     public void testRegisterDevice() {
         DeviceProfile d = new DeviceProfile();
@@ -158,6 +188,9 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertEquals(d.getDeviceType(), "LAPTOP");
     }
 
+    // --------------------------------------------------------
+    // 5) POLICY RULE TESTS
+    // --------------------------------------------------------
     @Test(priority = 16)
     public void testCreatePolicyRule() {
         PolicyRule r = new PolicyRule();
@@ -179,14 +212,15 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertEquals(r.getSeverity(), "HIGH");
     }
 
+    // --------------------------------------------------------
+    // 6) RULE EVALUATION TESTS
+    // --------------------------------------------------------
     @Test(priority = 19)
     public void testViolationTriggered() {
         PolicyRule r = new PolicyRule();
-        r.setId(1L);
         r.setActive(true);
         r.setConditionsJson("FAILED");
         r.setSeverity("HIGH");
-        r.setRuleCode("RULE_01");
 
         when(ruleRepo.findByActiveTrue()).thenReturn(List.of(r));
 
@@ -201,9 +235,12 @@ public class ItPolicyMasterTestSuiteTest {
     public void testNoViolationWhenNoRules() {
         reset(violationRepo);
         when(ruleRepo.findByActiveTrue()).thenReturn(List.of());
+
         LoginEvent event = new LoginEvent();
         event.setLoginStatus("SUCCESS");
+
         ruleEvaluator.evaluateLoginEvent(event);
+
         verify(violationRepo, never()).save(any());
     }
 
@@ -214,6 +251,9 @@ public class ItPolicyMasterTestSuiteTest {
         Assert.assertEquals(v.getDetails(), "Device mismatch");
     }
 
+    // --------------------------------------------------------
+    // 7) VIOLATION SERVICE TESTS
+    // --------------------------------------------------------
     @Test(priority = 22)
     public void testLogViolation() {
         ViolationRecord v = new ViolationRecord();
@@ -224,7 +264,8 @@ public class ItPolicyMasterTestSuiteTest {
 
     @Test(priority = 23)
     public void testGetUnresolvedViolations() {
-        when(violationRepo.findByResolvedFalse()).thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
+        when(violationRepo.findByResolvedFalse())
+                .thenReturn(List.of(new ViolationRecord(), new ViolationRecord()));
         Assert.assertEquals(violationService.getUnresolvedViolations().size(), 2);
     }
 
@@ -233,16 +274,22 @@ public class ItPolicyMasterTestSuiteTest {
         ViolationRecord v = new ViolationRecord();
         v.setId(7L);
         v.setResolved(false);
+
         when(violationRepo.findById(7L)).thenReturn(Optional.of(v));
         when(violationRepo.save(any())).thenReturn(v);
+
         Assert.assertTrue(violationService.markResolved(7L).getResolved());
     }
 
+    // --------------------------------------------------------
+    // 8) CONTROLLER TESTS
+    // --------------------------------------------------------
     @Test(priority = 25)
     public void testUserControllerCreate() {
         UserAccountService svc = mock(UserAccountService.class);
         UserAccountController ctrl = new UserAccountController(svc);
         UserAccount u = new UserAccount();
+
         when(svc.createUser(any())).thenReturn(u);
         Assert.assertNotNull(ctrl.create(u).getBody());
     }
@@ -251,8 +298,10 @@ public class ItPolicyMasterTestSuiteTest {
     public void testDeviceControllerLookup() {
         DeviceProfileService svc = mock(DeviceProfileService.class);
         DeviceProfileController ctrl = new DeviceProfileController(svc);
+
         DeviceProfile d = new DeviceProfile();
         d.setDeviceId("D77");
+
         when(svc.findByDeviceId("D77")).thenReturn(Optional.of(d));
         Assert.assertEquals(ctrl.lookup("D77").getBody().getDeviceId(), "D77");
     }
@@ -261,6 +310,7 @@ public class ItPolicyMasterTestSuiteTest {
     public void testRuleControllerList() {
         PolicyRuleService svc = mock(PolicyRuleService.class);
         PolicyRuleController ctrl = new PolicyRuleController(svc);
+
         when(svc.getAllRules()).thenReturn(List.of(new PolicyRule()));
         Assert.assertEquals(ctrl.all().getBody().size(), 1);
     }
@@ -269,35 +319,48 @@ public class ItPolicyMasterTestSuiteTest {
     public void testViolationControllerLog() {
         ViolationRecordService svc = mock(ViolationRecordService.class);
         ViolationRecordController ctrl = new ViolationRecordController(svc);
+
         ViolationRecord v = new ViolationRecord();
         when(svc.logViolation(any())).thenReturn(v);
+
         Assert.assertNotNull(ctrl.log(v).getBody());
     }
 
-    @Test(priority = 29)
-    public void testJwtValidate() {
-        String token = jwtUtil.generateToken("test", 10L, "x@test.com", "ADMIN");
-        Assert.assertTrue(jwtUtil.validateToken(token));
-    }
+    // --------------------------------------------------------
+    // 9) JWT TESTS (USING REAL JWT UTIL)
+    // --------------------------------------------------------
+ // --------------------------------------------------------
+// 9) JWT TESTS (USING REAL JWT UTIL)
+// --------------------------------------------------------
 
-    @Test(priority = 30)
-    public void testJwtExtractEmail() {
-        String token = jwtUtil.generateToken("test", 10L, "abc@test.com", "ADMIN");
-        Assert.assertEquals(jwtUtil.getEmail(token), "abc@test.com");
-    }
+@Test(priority = 29)
+public void testJwtValidate() {
+    String token = jwtUtil.generateToken("test", 10L, "x@test.com", "ADMIN");
+    Assert.assertTrue(jwtUtil.validateToken(token));
+}
 
-    @Test(priority = 31)
-    public void testJwtExtractRole() {
-        String token = jwtUtil.generateToken("test", 10L, "aaa@test.com", "AUDITOR");
-        Assert.assertEquals(jwtUtil.getRole(token), "AUDITOR");
-    }
+@Test(priority = 30)
+public void testJwtExtractEmail() {
+    String token = jwtUtil.generateToken("test", 10L, "abc@test.com", "ADMIN");
+    Assert.assertEquals(jwtUtil.getEmail(token), "abc@test.com");
+}
 
-    @Test(priority = 32)
-    public void testJwtExtractUserId() {
-        String token = jwtUtil.generateToken("test", 99L, "uuu@test.com", "ADMIN");
-        Assert.assertEquals(jwtUtil.getUserId(token), Long.valueOf(99L));
-    }
+@Test(priority = 31)
+public void testJwtExtractRole() {
+    String token = jwtUtil.generateToken("test", 10L, "aaa@test.com", "AUDITOR");
+    Assert.assertEquals(jwtUtil.getRole(token), "AUDITOR");
+}
 
+@Test(priority = 32)
+public void testJwtExtractUserId() {
+    String token = jwtUtil.generateToken("test", 99L, "uuu@test.com", "ADMIN");
+    Assert.assertEquals(jwtUtil.getUserId(token), Long.valueOf(99L));
+}
+
+
+    // --------------------------------------------------------
+    // 10) ENTITY FIELD TESTS
+    // --------------------------------------------------------
     @Test(priority = 33)
     public void testUserEmailField() {
         UserAccount u = new UserAccount();
