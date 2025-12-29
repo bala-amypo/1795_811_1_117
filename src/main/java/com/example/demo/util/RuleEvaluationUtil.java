@@ -114,6 +114,7 @@
 //     }
 // }
 package com.example.demo.util;
+
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import org.springframework.stereotype.Component;
@@ -124,14 +125,15 @@ public class RuleEvaluationUtil {
     private final PolicyRuleRepository ruleRepo;
     private final ViolationRecordRepository violationRepo;
 
-    public RuleEvaluationUtil(PolicyRuleRepository r, ViolationRecordRepository v) {
-        this.ruleRepo = r;
-        this.violationRepo = v;
+    public RuleEvaluationUtil(PolicyRuleRepository ruleRepo, ViolationRecordRepository violationRepo) {
+        this.ruleRepo = ruleRepo;
+        this.violationRepo = violationRepo;
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        List<PolicyRule> activeRules = ruleRepo.findByActiveTrue();
-        for (PolicyRule rule : activeRules) {
+        List<PolicyRule> rules = ruleRepo.findByActiveTrue();
+        for (PolicyRule rule : rules) {
+            // Check if rule condition matches login status (e.g., "FAILED")
             if (rule.getConditionsJson() != null && rule.getConditionsJson().contains(event.getLoginStatus())) {
                 ViolationRecord v = new ViolationRecord();
                 v.setUserId(event.getUserId());
