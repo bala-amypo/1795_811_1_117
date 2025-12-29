@@ -20,3 +20,15 @@
 //     List<ViolationRecord> getUnresolvedViolations();
 //     ViolationRecord markResolved(Long id);
 // }
+package com.example.demo.service;
+
+import com.example.demo.entity.*;
+import java.util.List;
+import java.util.Optional;
+
+
+public interface ViolationRecordService {
+    ViolationRecord logViolation(ViolationRecord v);
+    List<ViolationRecord> getUnresolvedViolations();
+    ViolationRecord markResolved(Long id);
+}
