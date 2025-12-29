@@ -175,18 +175,24 @@
 // }
 package com.example.demo.entity;
 
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.Data;
 import java.time.LocalDateTime;
 
-}
-
-// --- ViolationRecord ---
+@Entity
 @Data
-public class ViolationRecord {
+@Table(name = "user_accounts")
+public class UserAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long eventId;
-    private String details;
-    private String severity;
-    private Boolean resolved = false;
+    
+    private String username;
+    private String email;
+    private String password;
+    private String role;
+    private String status; // ACTIVE, SUSPENDED, etc.
+    private String employeeId;
+    
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
