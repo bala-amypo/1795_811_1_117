@@ -134,27 +134,16 @@
 // }
 package com.example.demo.entity;
 import jakarta.persistence.*;
+import lombok.Data;
 
-@Entity
+@Entity @Data
 public class ViolationRecord {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
     private Long eventId;
-    private String details;
+    private String ruleCode;
     private String severity;
+    private String details;
     private Boolean resolved = false;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public Long getEventId() { return eventId; }
-    public void setEventId(Long eventId) { this.eventId = eventId; }
-    public String getDetails() { return details; }
-    public void setDetails(String details) { this.details = details; }
-    public String getSeverity() { return severity; }
-    public void setSeverity(String severity) { this.severity = severity; }
-    public Boolean getResolved() { return resolved; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }
