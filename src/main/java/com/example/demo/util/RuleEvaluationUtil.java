@@ -114,11 +114,9 @@
 //     }
 // }
 package com.example.demo.util;
-
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 public class RuleEvaluationUtil {
@@ -131,18 +129,16 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        List<PolicyRule> rules = ruleRepo.findByActiveTrue();
-        for (PolicyRule rule : rules) {
-            // Check if rule condition matches login status (e.g., "FAILED")
-            if (rule.getConditionsJson() != null && rule.getConditionsJson().contains(event.getLoginStatus())) {
+        ruleRepo.findByActiveTrue().forEach(rule -> {
+            if (event.getLoginStatus().equalsIgnoreCase(rule.getConditionsJson())) {
                 ViolationRecord v = new ViolationRecord();
                 v.setUserId(event.getUserId());
                 v.setEventId(event.getId());
+                v.setRuleCode(rule.getRuleCode());
                 v.setSeverity(rule.getSeverity());
-                v.setDetails("Policy Violation: " + rule.getRuleCode());
-                v.setResolved(false);
+                v.setDetails("Policy mismatch detected for status: " + event.getLoginStatus());
                 violationRepo.save(v);
             }
-        }
+        });
     }
 }

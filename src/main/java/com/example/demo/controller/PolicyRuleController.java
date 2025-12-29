@@ -54,3 +54,22 @@
 //         return ResponseEntity.ok(service.getAllRules());
 //     }
 // }
+package com.example.demo.controller;
+import com.example.demo.entity.PolicyRule;
+import com.example.demo.service.PolicyRuleService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/rules")
+public class PolicyRuleController {
+    private final PolicyRuleService service;
+    public PolicyRuleController(PolicyRuleService service) { this.service = service; }
+
+    @PostMapping
+    public ResponseEntity<PolicyRule> create(@RequestBody PolicyRule r) { return ResponseEntity.ok(service.createRule(r)); }
+
+    @GetMapping
+    public ResponseEntity<List<PolicyRule>> all() { return ResponseEntity.ok(service.getAllRules()); }
+}
