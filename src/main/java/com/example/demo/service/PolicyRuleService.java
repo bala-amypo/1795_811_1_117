@@ -19,3 +19,16 @@
 //     List<PolicyRule> getActiveRules();
 //     List<PolicyRule> getAllRules();
 // }
+package com.example.demo.service;
+
+import com.example.demo.entity.*;
+import java.util.List;
+import java.util.Optional;
+
+
+public interface PolicyRuleService {
+    PolicyRule createRule(PolicyRule rule);
+    List<PolicyRule> getActiveRules();
+    List<PolicyRule> getAllRules();
+}
+
