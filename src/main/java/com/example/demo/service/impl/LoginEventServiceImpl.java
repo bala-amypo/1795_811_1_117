@@ -128,7 +128,8 @@ public class LoginEventServiceImpl implements LoginEventService {
     @Override
     public LoginEvent recordLogin(LoginEvent event) {
         LoginEvent saved = repo.save(event);
-        ruleEvaluator.evaluateLoginEvent(saved); // Triggers violation logic
+        // Automatically check for violations after saving
+        ruleEvaluator.evaluateLoginEvent(saved);
         return saved;
     }
 
