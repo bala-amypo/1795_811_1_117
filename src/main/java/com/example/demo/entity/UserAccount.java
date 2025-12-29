@@ -1,58 +1,6 @@
-// package com.example.demo.entity;
-
-// import jakarta.persistence.*;
-// import java.time.LocalDateTime;
-
-// @Entity
-// public class UserAccount {
-
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     private String employeeId;
-//     private String username;
-//     private String password;
-//     private String email;
-//     private String role;
-//     private String status;
-//     private LocalDateTime createdAt;
-
-//     public UserAccount() {}
-
-//     public Long getId() { return id; }
-//     public void setId(Long id) { this.id = id; }
-
-//     public String getEmployeeId() { return employeeId; }
-//     public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
-
-//     public String getUsername() { return username; }
-//     public void setUsername(String username) { this.username = username; }
-
-//     public String getPassword() { return password; }
-//     public void setPassword(String password) { this.password = password; }
-
-//     public String getEmail() { return email; }
-//     public void setEmail(String email) { this.email = email; }
-
-//     public String getRole() { return role; }
-//     public void setRole(String role) { this.role = role; }
-
-//     public String getStatus() { return status; }
-//     public void setStatus(String status) { this.status = status; }
-
-//     public LocalDateTime getCreatedAt() { return createdAt; }
-//     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-// }
-
-
-
 // // package com.example.demo.entity;
 
-// // import jakarta.persistence.Entity;
-// // import jakarta.persistence.Id;
-// // import jakarta.persistence.GeneratedValue;
-// // import jakarta.persistence.GenerationType;
+// // import jakarta.persistence.*;
 // // import java.time.LocalDateTime;
 
 // // @Entity
@@ -62,97 +10,212 @@
 // //     @GeneratedValue(strategy = GenerationType.IDENTITY)
 // //     private Long id;
 
+// //     private String employeeId;
 // //     private String username;
 // //     private String password;
 // //     private String email;
+// //     private String role;
 // //     private String status;
 // //     private LocalDateTime createdAt;
 
-// //     // Getters and Setters
-// //     public Long getId() {
-// //         return id;
-// //     }
+// //     public UserAccount() {}
 
-// //     public void setId(Long id) {
-// //         this.id = id;
-// //     }
+// //     public Long getId() { return id; }
+// //     public void setId(Long id) { this.id = id; }
 
-// //     public String getUsername() {
-// //         return username;
-// //     }
+// //     public String getEmployeeId() { return employeeId; }
+// //     public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
 
-// //     public void setUsername(String username) {
-// //         this.username = username;
-// //     }
+// //     public String getUsername() { return username; }
+// //     public void setUsername(String username) { this.username = username; }
 
-// //     public String getPassword() {
-// //         return password;
-// //     }
+// //     public String getPassword() { return password; }
+// //     public void setPassword(String password) { this.password = password; }
 
-// //     public void setPassword(String password) {
-// //         this.password = password;
-// //     }
+// //     public String getEmail() { return email; }
+// //     public void setEmail(String email) { this.email = email; }
 
-// //     public String getEmail() {
-// //         return email;
-// //     }
+// //     public String getRole() { return role; }
+// //     public void setRole(String role) { this.role = role; }
 
-// //     public void setEmail(String email) {
-// //         this.email = email;
-// //     }
+// //     public String getStatus() { return status; }
+// //     public void setStatus(String status) { this.status = status; }
 
-// //     public String getStatus() {
-// //         return status;
-// //     }
-
-// //     public void setStatus(String status) {
-// //         this.status = status;
-// //     }
-
-// //     public LocalDateTime getCreatedAt() {
-// //         return createdAt;
-// //     }
-
-// //     public void setCreatedAt(LocalDateTime createdAt) {
-// //         this.createdAt = createdAt;
-// //     }
+// //     public LocalDateTime getCreatedAt() { return createdAt; }
+// //     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 // // }
 
+
+
+// // // package com.example.demo.entity;
+
+// // // import jakarta.persistence.Entity;
+// // // import jakarta.persistence.Id;
+// // // import jakarta.persistence.GeneratedValue;
+// // // import jakarta.persistence.GenerationType;
+// // // import java.time.LocalDateTime;
+
+// // // @Entity
+// // // public class UserAccount {
+
+// // //     @Id
+// // //     @GeneratedValue(strategy = GenerationType.IDENTITY)
+// // //     private Long id;
+
+// // //     private String username;
+// // //     private String password;
+// // //     private String email;
+// // //     private String status;
+// // //     private LocalDateTime createdAt;
+
+// // //     // Getters and Setters
+// // //     public Long getId() {
+// // //         return id;
+// // //     }
+
+// // //     public void setId(Long id) {
+// // //         this.id = id;
+// // //     }
+
+// // //     public String getUsername() {
+// // //         return username;
+// // //     }
+
+// // //     public void setUsername(String username) {
+// // //         this.username = username;
+// // //     }
+
+// // //     public String getPassword() {
+// // //         return password;
+// // //     }
+
+// // //     public void setPassword(String password) {
+// // //         this.password = password;
+// // //     }
+
+// // //     public String getEmail() {
+// // //         return email;
+// // //     }
+
+// // //     public void setEmail(String email) {
+// // //         this.email = email;
+// // //     }
+
+// // //     public String getStatus() {
+// // //         return status;
+// // //     }
+
+// // //     public void setStatus(String status) {
+// // //         this.status = status;
+// // //     }
+
+// // //     public LocalDateTime getCreatedAt() {
+// // //         return createdAt;
+// // //     }
+
+// // //     public void setCreatedAt(LocalDateTime createdAt) {
+// // //         this.createdAt = createdAt;
+// // //     }
+// // // }
+
+// package com.example.demo.entity;
+
+// import java.time.LocalDateTime;
+
+// public class UserAccount {
+//     private Long id;
+//     private String email;
+//     private String password;
+//     private String username;
+//     private String status;
+//     private String role;
+//     private String employeeId;
+//     private LocalDateTime createdAt;
+
+//     public Long getId() { return id; }
+//     public void setId(Long id) { this.id = id; }
+
+//     public String getEmail() { return email; }
+//     public void setEmail(String email) { this.email = email; }
+
+//     public String getPassword() { return password; }
+//     public void setPassword(String password) { this.password = password; }
+
+//     public String getUsername() { return username; }
+//     public void setUsername(String username) { this.username = username; }
+
+//     public String getStatus() { return status; }
+//     public void setStatus(String status) { this.status = status; }
+
+//     public String getRole() { return role; }
+//     public void setRole(String role) { this.role = role; }
+
+//     public String getEmployeeId() { return employeeId; }
+//     public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+
+//     public LocalDateTime getCreatedAt() { return createdAt; }
+//     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+// }
 package com.example.demo.entity;
 
+import lombok.*;
 import java.time.LocalDateTime;
 
+// --- UserAccount ---
+@Data
 public class UserAccount {
     private Long id;
+    private String username;
     private String email;
     private String password;
-    private String username;
-    private String status;
     private String role;
+    private String status;
     private String employeeId;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+// --- LoginEvent ---
+@Data
+public class LoginEvent {
+    private Long id;
+    private Long userId;
+    private String loginStatus; // e.g., SUCCESS, FAILED
+    private String ipAddress;
+    private String deviceId;
+    private String location;
+    private LocalDateTime timestamp;
+}
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+// --- DeviceProfile ---
+@Data
+public class DeviceProfile {
+    private Long id;
+    private String deviceId;
+    private String deviceType;
+    private Boolean isTrusted;
+    private LocalDateTime lastSeen;
+    private String osVersion;
+    private Long userId;
+}
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+// --- PolicyRule ---
+@Data
+public class PolicyRule {
+    private Long id;
+    private String ruleCode;
+    private String description;
+    private String conditionsJson;
+    private String severity;
+    private Boolean active;
+}
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    public String getEmployeeId() { return employeeId; }
-    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+// --- ViolationRecord ---
+@Data
+public class ViolationRecord {
+    private Long id;
+    private Long userId;
+    private Long eventId;
+    private String details;
+    private String severity;
+    private Boolean resolved = false;
 }
