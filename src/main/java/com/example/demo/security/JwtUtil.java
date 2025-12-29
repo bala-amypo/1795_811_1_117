@@ -232,7 +232,6 @@
 //     }
 // }
 package com.example.demo.security;
-
 import io.jsonwebtoken.*;
 import java.util.Date;
 
@@ -245,9 +244,9 @@ public class JwtUtil {
         this.expiration = expiration;
     }
 
-    public String generateToken(String username, Long userId, String email, String role) {
+    public String generateToken(String sub, Long userId, String email, String role) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(sub)
                 .claim("userId", userId)
                 .claim("email", email)
                 .claim("role", role)
@@ -258,21 +257,11 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) { return false; }
+        try { Jwts.parser().setSigningKey(secret).parseClaimsJws(token); return true; } 
+        catch (Exception e) { return false; }
     }
 
-    public String getEmail(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("email", String.class);
-    }
-
-    public String getRole(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role", String.class);
-    }
-
-    public Long getUserId(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("userId", Long.class);
-    }
+    public String getEmail(String t) { return Jwts.parser().setSigningKey(secret).parseClaimsJws(t).getBody().get("email", String.class); }
+    public String getRole(String t) { return Jwts.parser().setSigningKey(secret).parseClaimsJws(t).getBody().get("role", String.class); }
+    public Long getUserId(String t) { return Jwts.parser().setSigningKey(secret).parseClaimsJws(t).getBody().get("userId", Long.class); }
 }

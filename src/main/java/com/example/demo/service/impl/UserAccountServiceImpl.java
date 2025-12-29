@@ -129,7 +129,6 @@
 //     public List<UserAccount> getAllUsers() { return repo.findAll(); }
 // }
 package com.example.demo.service.impl;
-
 import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
@@ -147,28 +146,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         this.encoder = encoder;
     }
 
-    @Override
-    public UserAccount createUser(UserAccount u) {
-        if (u.getPassword() != null) {
-            u.setPassword(encoder.encode(u.getPassword()));
-        }
+    @Override public UserAccount createUser(UserAccount u) {
+        if(u.getPassword() != null) u.setPassword(encoder.encode(u.getPassword()));
         return repo.save(u);
     }
-
-    @Override
-    public UserAccount getUserById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    @Override
-    public UserAccount updateUserStatus(Long id, String status) {
-        UserAccount u = repo.findById(id).orElseThrow();
+    @Override public UserAccount getUserById(Long id) { return repo.findById(id).orElse(null); }
+    @Override public List<UserAccount> getAllUsers() { return repo.findAll(); }
+    @Override public UserAccount updateUserStatus(Long id, String status) {
+        UserAccount u = repo.findById(id).get();
         u.setStatus(status);
         return repo.save(u);
-    }
-
-    @Override
-    public List<UserAccount> getAllUsers() {
-        return repo.findAll();
     }
 }

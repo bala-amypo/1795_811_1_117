@@ -122,19 +122,32 @@
 //     public void setLastSeen(LocalDateTime lastSeen) { this.lastSeen = lastSeen; }
 // }
 package com.example.demo.entity;
-
-import lombok.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-
-// --- DeviceProfile ---
-@Data
+@Entity
 public class DeviceProfile {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String deviceId;
     private String deviceType;
-    private Boolean isTrusted;
+    private Boolean isTrusted = false;
     private LocalDateTime lastSeen;
     private String osVersion;
     private Long userId;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getDeviceId() { return deviceId; }
+    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
+    public String getDeviceType() { return deviceType; }
+    public void setDeviceType(String deviceType) { this.deviceType = deviceType; }
+    public Boolean getIsTrusted() { return isTrusted; }
+    public void setIsTrusted(Boolean isTrusted) { this.isTrusted = isTrusted; }
+    public LocalDateTime getLastSeen() { return lastSeen; }
+    public void setLastSeen(LocalDateTime lastSeen) { this.lastSeen = lastSeen; }
+    public String getOsVersion() { return osVersion; }
+    public void setOsVersion(String osVersion) { this.osVersion = osVersion; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 }

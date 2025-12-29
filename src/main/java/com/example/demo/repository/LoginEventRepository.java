@@ -20,13 +20,10 @@
 //     List<LoginEvent> findByUserIdAndLoginStatus(Long id, String status);
 // }
 package com.example.demo.repository;
-
-import com.example.demo.entity.*;
+import com.example.demo.entity.LoginEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
-import java.util.Optional;
 
-public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {}
 public interface LoginEventRepository extends JpaRepository<LoginEvent, Long> {
     List<LoginEvent> findByUserId(Long userId);
     List<LoginEvent> findByUserIdAndLoginStatus(Long userId, String status);
