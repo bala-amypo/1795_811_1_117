@@ -121,22 +121,14 @@ import java.util.List;
 public class PolicyRuleServiceImpl implements PolicyRuleService {
     private final PolicyRuleRepository repo;
 
-    public PolicyRuleServiceImpl(PolicyRuleRepository repo) {
-        this.repo = repo;
-    }
+    public PolicyRuleServiceImpl(PolicyRuleRepository repo) { this.repo = repo; }
 
     @Override
-    public PolicyRule createRule(PolicyRule rule) {
-        return repo.save(rule);
-    }
+    public PolicyRule createRule(PolicyRule r) { return repo.save(r); }
 
     @Override
-    public List<PolicyRule> getActiveRules() {
-        return repo.findByActiveTrue();
-    }
+    public List<PolicyRule> getActiveRules() { return repo.findByActiveTrue(); }
 
     @Override
-    public List<PolicyRule> getAllRules() {
-        return repo.findAll();
-    }
+    public List<PolicyRule> getAllRules() { return repo.findAll(); }
 }
