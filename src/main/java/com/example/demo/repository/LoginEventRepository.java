@@ -31,12 +31,3 @@ public interface LoginEventRepository extends JpaRepository<LoginEvent, Long> {
     List<LoginEvent> findByUserId(Long userId);
     List<LoginEvent> findByUserIdAndLoginStatus(Long userId, String status);
 }
-public interface DeviceProfileRepository extends JpaRepository<DeviceProfile, Long> {
-    Optional<DeviceProfile> findByDeviceId(String deviceId);
-}
-public interface PolicyRuleRepository extends JpaRepository<PolicyRule, Long> {
-    List<PolicyRule> findByActiveTrue();
-}
-public interface ViolationRecordRepository extends JpaRepository<ViolationRecord, Long> {
-    List<ViolationRecord> findByResolvedFalse();
-}
